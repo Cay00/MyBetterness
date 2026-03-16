@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "803333340987",
+    "project_id": "projektleki",
+    "storage_bucket": "projektleki.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:803333340987:android:82a29d3024324c3618c11e",
+        "android_client_info": {
+          "package_name": "com.example.my_template"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3PVcpuv39hnxjB6gvcMnYzSk1QW4Q898"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
