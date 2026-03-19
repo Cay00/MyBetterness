@@ -63,7 +63,7 @@ class _ToggleButton extends StatelessWidget {
         duration: const Duration(milliseconds: 180),
         padding: const EdgeInsets.symmetric(vertical: 14),
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xff2f6df6) : Colors.transparent,
+          color: isSelected ? const Color(0xff222222) : Colors.transparent,
           borderRadius: BorderRadius.circular(14),
         ),
         child: Text(
@@ -72,7 +72,7 @@ class _ToggleButton extends StatelessWidget {
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w700,
-            color: isSelected ? Colors.white : const Color(0xff385273),
+            color: isSelected ? Colors.white : const Color(0xff222222),
           ),
         ),
       ),

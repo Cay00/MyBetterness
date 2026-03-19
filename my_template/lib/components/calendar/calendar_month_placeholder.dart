@@ -29,7 +29,7 @@ class CalendarMonthPlaceholder extends StatelessWidget {
             style: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.w800,
-              color: Color(0xff12243d),
+              color: Color(0xff222222),
             ),
           ),
           const SizedBox(height: 18),
@@ -43,7 +43,7 @@ class CalendarMonthPlaceholder extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w700,
-                        color: Color(0xff6a7d9b),
+                        color: Color(0xff222222),
                       ),
                     ),
                   ),
@@ -81,7 +81,7 @@ class CalendarMonthPlaceholder extends StatelessWidget {
                           ? Colors.transparent
                           : isHighlighted
                           ? Colors.white
-                          : const Color(0xff12243d),
+                          : const Color(0xff222222),
                     ),
                   ),
                 ),
@@ -101,7 +101,7 @@ class CalendarMonthPlaceholder extends StatelessWidget {
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
-                color: Color(0xff35527a),
+                color: Color(0xff222222),
               ),
             ),
           ),

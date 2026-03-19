@@ -44,11 +44,11 @@ class CalendarDayPicker extends StatelessWidget {
               width: 76,
               padding: const EdgeInsets.symmetric(vertical: 12),
               decoration: BoxDecoration(
-                color: isSelected ? const Color(0xff2f6df6) : Colors.white,
+                color: isSelected ? const Color(0xff222222) : Colors.white,
                 borderRadius: BorderRadius.circular(22),
                 border: Border.all(
                   color: isSelected
-                      ? const Color(0xff2f6df6)
+                      ? const Color(0xff222222)
                       : const Color(0xffcbd8eb),
                 ),
               ),
@@ -61,7 +61,7 @@ class CalendarDayPicker extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w700,
-                      color: isSelected ? Colors.white : const Color(0xff6a7d9b),
+                      color: isSelected ? Colors.white : const Color(0xff222222),
                     ),
                   ),
                   const SizedBox(height: 6),
@@ -70,7 +70,7 @@ class CalendarDayPicker extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.w800,
-                      color: isSelected ? Colors.white : const Color(0xff12243d),
+                      color: isSelected ? Colors.white : const Color(0xff222222),
                     ),
                   ),
                   if (day.isToday) ...[
@@ -79,7 +79,7 @@ class CalendarDayPicker extends StatelessWidget {
                       width: 8,
                       height: 8,
                       decoration: BoxDecoration(
-                        color: isSelected ? Colors.white : const Color(0xff2f6df6),
+                        color: isSelected ? Colors.white : const Color(0xff9bac69),
                         shape: BoxShape.circle,
                       ),
                     ),

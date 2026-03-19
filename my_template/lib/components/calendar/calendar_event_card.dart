@@ -45,7 +45,7 @@ class CalendarEventCard extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w800,
-                    color: Color(0xff12243d),
+                    color: Color(0xff222222),
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -53,7 +53,7 @@ class CalendarEventCard extends StatelessWidget {
                   subtitle,
                   style: const TextStyle(
                     fontSize: 14,
-                    color: Color(0xff64748b),
+                    color: Color(0xff222222),
                   ),
                 ),
                 const SizedBox(height: 14),
@@ -115,7 +115,7 @@ class _InfoPill extends StatelessWidget {
             style: TextStyle(
               fontSize: 13,
               fontWeight: FontWeight.w700,
-              color: foregroundColor,
+              color: const Color(0xff222222),
             ),
           ),
         ],

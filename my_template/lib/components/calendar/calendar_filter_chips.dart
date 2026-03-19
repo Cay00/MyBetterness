@@ -26,11 +26,11 @@ class CalendarFilterChips extends StatelessWidget {
             duration: const Duration(milliseconds: 180),
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             decoration: BoxDecoration(
-              color: isSelected ? const Color(0xff16396b) : Colors.white,
+              color: isSelected ? const Color(0xff222222) : Colors.white,
               borderRadius: BorderRadius.circular(999),
               border: Border.all(
                 color: isSelected
-                    ? const Color(0xff16396b)
+                    ? const Color(0xff222222)
                     : const Color(0xffcbd8eb),
               ),
             ),
@@ -39,7 +39,7 @@ class CalendarFilterChips extends StatelessWidget {
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w700,
-                color: isSelected ? Colors.white : const Color(0xff3f587c),
+                color: isSelected ? Colors.white : const Color(0xff222222),
               ),
             ),
           ),

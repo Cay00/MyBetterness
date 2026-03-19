@@ -85,7 +85,7 @@ class _CalendarPageState extends State<CalendarPage> {
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w800,
-                    color: Color(0xff12243d),
+                    color: Color(0xff222222),
                   ),
                 ),
                 const SizedBox(height: 14),
@@ -104,7 +104,7 @@ class _CalendarPageState extends State<CalendarPage> {
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w800,
-                    color: Color(0xff12243d),
+                    color: Color(0xff222222),
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -125,7 +125,7 @@ class _CalendarPageState extends State<CalendarPage> {
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w800,
-                        color: Color(0xff12243d),
+                        color: Color(0xff222222),
                       ),
                     ),
                     const Spacer(),
@@ -134,7 +134,7 @@ class _CalendarPageState extends State<CalendarPage> {
                       style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
-                        color: Color(0xff6a7d9b),
+                        color: Color(0xff222222),
                       ),
                     ),
                   ],
@@ -153,7 +153,7 @@ class _CalendarPageState extends State<CalendarPage> {
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w600,
-                        color: Color(0xff64748b),
+                        color: Color(0xff222222),
                       ),
                     ),
                   )
