@@ -109,14 +109,10 @@ class HomePageContent extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          const CalendarDayPicker(days: [], selectedIndex: 0),
-          const SizedBox(height: 16),
-          const CalendarEventCard(
-            title: "Medication Plan",
-            subtitle: "12:00 - 7:30 AM",
-            timeLabel: "1:30 AM",
-            category: "Urgent",
-            accentColor: Colors.red,
+          CalendarDayPicker(
+            days: const [],
+            selectedIndex: 0,
+            onDaySelected: (index) {},
           ),
           const SizedBox(height: 12),
           const CalendarEventCard(
