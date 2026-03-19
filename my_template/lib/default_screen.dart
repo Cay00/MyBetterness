@@ -47,7 +47,7 @@ class _DefaultScreenState extends State<DefaultScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xfff1f1f1),
+      backgroundColor: const Color.fromARGB(255, 208, 232, 255),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20),
