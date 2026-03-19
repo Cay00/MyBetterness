@@ -15,10 +15,10 @@ class CalendarViewToggle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(4),
+      padding: const EdgeInsets.all(0),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
         children: [
@@ -29,7 +29,7 @@ class CalendarViewToggle extends StatelessWidget {
               onTap: () => onModeChanged(CalendarViewMode.daily),
             ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: 0),
           Expanded(
             child: _ToggleButton(
               label: 'Monthly',
@@ -57,14 +57,14 @@ class _ToggleButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      borderRadius: BorderRadius.circular(14),
+      borderRadius: BorderRadius.circular(16),
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 180),
-        padding: const EdgeInsets.symmetric(vertical: 14),
+        padding: const EdgeInsets.symmetric(vertical: 8),
         decoration: BoxDecoration(
           color: isSelected ? const Color(0xff222222) : Colors.transparent,
-          borderRadius: BorderRadius.circular(14),
+          borderRadius: BorderRadius.circular(16),
         ),
         child: Text(
           label,

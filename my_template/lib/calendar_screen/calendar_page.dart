@@ -24,8 +24,8 @@ class _CalendarPageState extends State<CalendarPage> {
   @override
   void initState() {
     super.initState();
-    days = _buildDays();
     eventsByDay = calendarMockEventsByDay;
+    days = _buildDays();
     selectedDayIndex = _findInitialDayIndex();
   }
 
@@ -41,12 +41,16 @@ class _CalendarPageState extends State<CalendarPage> {
 
     return List.generate(7, (index) {
       final date = start.add(Duration(days: index));
+      final hasPlannedEvent =
+          index < eventsByDay.length && eventsByDay[index].isNotEmpty;
+
       return CalendarDayOption(
         label: labels[index],
         dayNumber: date.day,
         isToday: date.day == now.day &&
             date.month == now.month &&
             date.year == now.year,
+        hasPlannedEvent: hasPlannedEvent,
       );
     });
   }
@@ -70,25 +74,31 @@ class _CalendarPageState extends State<CalendarPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CalendarViewToggle(
-                selectedMode: selectedMode,
-                onModeChanged: (mode) {
-                  setState(() {
-                    selectedMode = mode;
-                  });
-                },
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: CalendarViewToggle(
+                  selectedMode: selectedMode,
+                  onModeChanged: (mode) {
+                    setState(() {
+                      selectedMode = mode;
+                    });
+                  },
+                ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 16),
               if (selectedMode == CalendarViewMode.daily) ...[
-                const Text(
-                  'This Week',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w800,
-                    color: Color(0xff222222),
+                const Padding(
+                  padding: EdgeInsets.only(left: 16),
+                  child: Text(
+                    'This Week',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xff03070C),
+                    ),
                   ),
                 ),
-                const SizedBox(height: 14),
+                const SizedBox(height: 8),
                 CalendarDayPicker(
                   days: days,
                   selectedIndex: selectedDayIndex,
@@ -98,82 +108,100 @@ class _CalendarPageState extends State<CalendarPage> {
                     });
                   },
                 ),
-                const SizedBox(height: 22),
-                const Text(
-                  'Filters',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w800,
-                    color: Color(0xff222222),
+                const SizedBox(height: 16),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(
+                    'Filters',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xff03070C),
+                    ),
                   ),
                 ),
-                const SizedBox(height: 12),
-                CalendarFilterChips(
-                  filters: calendarFilters,
-                  selectedFilter: selectedFilter,
-                  onFilterSelected: (filter) {
-                    setState(() {
-                      selectedFilter = filter;
-                    });
-                  },
+                const SizedBox(height: 8),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: CalendarFilterChips(
+                    filters: calendarFilters,
+                    selectedFilter: selectedFilter,
+                    onFilterSelected: (filter) {
+                      setState(() {
+                        selectedFilter = filter;
+                      });
+                    },
+                  ),
                 ),
-                const SizedBox(height: 24),
-                Row(
-                  children: [
-                    const Text(
-                      'Events',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w800,
-                        color: Color(0xff222222),
+                const SizedBox(height: 16),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    children: [
+                      const Text(
+                        'Events',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                          color: Color(0xff03070C),
+                        ),
                       ),
-                    ),
-                    const Spacer(),
-                    Text(
-                      '${visibleEvents.length} planned',
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xff222222),
+                      const Spacer(),
+                      Text(
+                        '${visibleEvents.length} planned',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          color: Color(0xff03070C),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-                const SizedBox(height: 14),
+                const SizedBox(height: 16),
                 if (visibleEvents.isEmpty)
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(24),
-                    ),
-                    child: const Text(
-                      'No events in this category for the selected day yet.',
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xff222222),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: const Text(
+                        'No events in this category for the selected day yet.',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xff03070C),
+                        ),
                       ),
                     ),
                   )
                 else
-                  Column(
-                    children: [
-                      for (final event in visibleEvents) ...[
-                        CalendarEventCard(
-                          title: event.title,
-                          subtitle: event.subtitle,
-                          timeLabel: event.timeLabel,
-                          category: event.category,
-                          accentColor: event.accentColor,
-                        ),
-                        const SizedBox(height: 14),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      children: [
+                        for (final event in visibleEvents) ...[
+                          CalendarEventCard(
+                            title: event.title,
+                            subtitle: event.subtitle,
+                            timeLabel: event.timeLabel,
+                            category: event.category,
+                            accentColor: event.accentColor,
+                          ),
+                          const SizedBox(height: 16),
+                        ],
                       ],
-                    ],
+                    ),
                   ),
               ] else ...[
-                const CalendarMonthPlaceholder(),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: CalendarMonthPlaceholder(),
+                ),
               ],
             ],
           ),
