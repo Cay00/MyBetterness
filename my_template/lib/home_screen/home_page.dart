@@ -19,28 +19,19 @@ class HomePageContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.symmetric(vertical: 28),
-          decoration: BoxDecoration(
-            color: const Color(0xffef3d3d),
-            borderRadius: BorderRadius.circular(28),
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Good Morning, User!",
+            style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Color(0xff12243d)),
           ),
-          child: const Center(
-            child: Text(
-              'SOS EMERGENCY',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 26,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+          const Text(
+            "Ready for your care tasks today.",
+            style: TextStyle(fontSize: 16, color: Colors.grey),
           ),
-        ),
-        const SizedBox(height: 28),
+          const SizedBox(height: 25),
         Container(
           width: double.infinity,
           padding: const EdgeInsets.all(24),
