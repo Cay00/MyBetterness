@@ -7,7 +7,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      backgroundColor: Color(0xfff1f1f1),
+      backgroundColor: Color.fromARGB(255, 208, 232, 255),
       body: SafeArea(
         child: Padding(padding: EdgeInsets.all(20), child: HomePageContent()),
       ),
@@ -115,28 +115,108 @@ class HomePageContent extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 32),
-          const Text(
-            "Upcoming Events",
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-              color: Color(0xff12243d),
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                "Care Calendar",
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xff12243d),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                  color: Colors.blue.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
+                      decoration: BoxDecoration(
+                        color: const Color(0xff2f6df6),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: const Text(
+                        "Daily",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 12),
+                      child: Text(
+                        "Monthly",
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 32),
-          const Text(
-            "Care Calendar",
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-              color: Color(0xff12243d),
-            ),
-          ),
-          const SizedBox(height: 16),
-          CalendarDayPicker(
-            days: days,
-            selectedIndex: 3,
-            onDaySelected: (index) {},
+          const SizedBox(height: 25),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: days.asMap().entries.map((entry) {
+              int idx = entry.key;
+              var day = entry.value;
+              bool isSelected = idx == 3;
+              return Column(
+                children: [
+                  Text(
+                    day.label,
+                    style: TextStyle(
+                      color: isSelected ? const Color(0xff2f6df6) : Colors.grey,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Container(
+                    width: 42,
+                    height: 42,
+                    decoration: BoxDecoration(
+                      //upda
+                      color: isSelected
+                          ? const Color(0xff2f6df6)
+                          : Colors.transparent,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "${day.dayNumber}",
+                        style: TextStyle(
+                          color: isSelected
+                              ? Colors.white
+                              : const Color(0xff12243d),
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                  if (isSelected)
+                    Container(
+                      margin: const EdgeInsets.only(top: 6),
+                      width: 4,
+                      height: 4,
+                      decoration: const BoxDecoration(
+                        color: Color(0xff2f6df6),
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                ],
+              );
+            }).toList(),
           ),
           const SizedBox(height: 24),
           Container(
