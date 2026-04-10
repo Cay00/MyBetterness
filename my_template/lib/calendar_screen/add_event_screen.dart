@@ -48,6 +48,38 @@ class _AddEventScreenState extends State<AddEventScreen> {
     super.dispose();
   }
 
+  Future<void> _pickDate() async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedDate,
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2030),
+    );
+    if (picked != null && picked != _selectedDate) {
+      setState(() => _selectedDate = picked);
+    }
+  }
+
+  Future<void> _pickStartTime() async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: _startTime,
+    );
+    if (picked != null && picked != _startTime) {
+      setState(() => _startTime = picked);
+    }
+  }
+
+  Future<void> _pickEndTime() async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: _endTime,
+    );
+    if (picked != null && picked != _endTime) {
+      setState(() => _endTime = picked);
+    }
+  }
+
   Future<void> _saveEvent() async {
     if (!_formKey.currentState!.validate()) return;
 
@@ -116,6 +148,39 @@ class _AddEventScreenState extends State<AddEventScreen> {
                     value == null || value.isEmpty ? 'Podaj tytuł' : null,
               ),
               const SizedBox(height: 16),
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                title: const Text('Data wydarzenia'),
+                subtitle: Text(
+                  '${_selectedDate.day}.${_selectedDate.month}.${_selectedDate.year}',
+                ),
+                trailing: const Icon(Icons.calendar_today),
+                onTap: _pickDate,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      title: const Text('Od'),
+                      subtitle: Text(_startTime.format(context)),
+                      trailing: const Icon(Icons.access_time),
+                      onTap: _pickStartTime,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      title: const Text('Do'),
+                      subtitle: Text(_endTime.format(context)),
+                      trailing: const Icon(Icons.access_time),
+                      onTap: _pickEndTime,
+                    ),
+                  ),
+                ],
+              ),
+              const Divider(),
               TextFormField(
                 controller: _descriptionController,
                 decoration: const InputDecoration(
