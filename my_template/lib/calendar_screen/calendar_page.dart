@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:my_template/data/calendar_mock_data.dart';
 import '../components/calendar/calendar_day_picker.dart';
 import '../components/calendar/calendar_event_card.dart';
 import '../components/calendar/calendar_filter_chips.dart';
 import '../components/calendar/calendar_month_placeholder.dart';
 import '../components/calendar/calendar_view_toggle.dart';
-import '../data/calendar_mock_data.dart';
+//import '../data/calendar_mock_data.dart';
 import 'add_event_screen.dart';
+import '../models/calendar_event.dart';
+import '../services/firebase/calendar_service.dart';
 
 class CalendarPage extends StatefulWidget {
   const CalendarPage({super.key});
@@ -15,24 +18,30 @@ class CalendarPage extends StatefulWidget {
 }
 
 class _CalendarPageState extends State<CalendarPage> {
-  late final List<CalendarDayOption> days;
-  late final List<List<CalendarEventData>> eventsByDay;
+  final CalendarService _calendarService = CalendarService();
+  final List<String> _calendarFilters = [
+    'All',
+    'Doctor',
+    'Rehab',
+    'Medications',
+    'Meals',
+    'Other',
+  ];
 
   CalendarViewMode selectedMode = CalendarViewMode.daily;
   int selectedDayIndex = 0;
-  String selectedFilter = calendarFilters.first;
+  late String selectedFilter;
 
   @override
   void initState() {
     super.initState();
-    eventsByDay = calendarMockEventsByDay;
-    days = _buildDays();
+    selectedFilter = _calendarFilters.first;
     selectedDayIndex = _findInitialDayIndex();
   }
 
   int _findInitialDayIndex() {
-    final index = days.indexWhere((day) => day.isToday);
-    return index == -1 ? 0 : index;
+    final now = DateTime.now();
+    return now.weekday - 1;
   }
 
   List<CalendarDayOption> _buildDays() {
