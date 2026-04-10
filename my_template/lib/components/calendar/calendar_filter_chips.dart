@@ -15,8 +15,8 @@ class CalendarFilterChips extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Wrap(
-      spacing: 10,
-      runSpacing: 10,
+      spacing: 8,
+      runSpacing: 8,
       children: filters.map((filter) {
         final isSelected = filter == selectedFilter;
         return InkWell(
@@ -24,7 +24,7 @@ class CalendarFilterChips extends StatelessWidget {
           onTap: () => onFilterSelected(filter),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 180),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
               color: isSelected ? const Color(0xff222222) : Colors.white,
               borderRadius: BorderRadius.circular(999),
@@ -39,7 +39,7 @@ class CalendarFilterChips extends StatelessWidget {
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w700,
-                color: isSelected ? Colors.white : const Color(0xff222222),
+                color: isSelected ? Colors.white : const Color(0xff03070C),
               ),
             ),
           ),

@@ -5,11 +5,13 @@ class CalendarDayOption {
     required this.label,
     required this.dayNumber,
     this.isToday = false,
+    this.hasPlannedEvent = false,
   });
 
   final String label;
   final int dayNumber;
   final bool isToday;
+  final bool hasPlannedEvent;
 }
 
 class CalendarDayPicker extends StatelessWidget {
@@ -30,6 +32,7 @@ class CalendarDayPicker extends StatelessWidget {
       height: 108,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.only(left: 16),
         itemCount: days.length,
         separatorBuilder: (_, __) => const SizedBox(width: 12),
         itemBuilder: (context, index) {
@@ -47,7 +50,7 @@ class CalendarDayPicker extends StatelessWidget {
                 color: isSelected ? const Color(0xff222222) : Colors.white,
                 borderRadius: BorderRadius.circular(22),
                 border: Border.all(
-                  color: isSelected
+                  color: isSelected || day.isToday
                       ? const Color(0xff222222)
                       : const Color(0xffcbd8eb),
                 ),
@@ -73,7 +76,7 @@ class CalendarDayPicker extends StatelessWidget {
                       color: isSelected ? Colors.white : const Color(0xff222222),
                     ),
                   ),
-                  if (day.isToday) ...[
+                  if (day.hasPlannedEvent) ...[
                     const SizedBox(height: 4),
                     Container(
                       width: 8,

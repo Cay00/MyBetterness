@@ -14,42 +14,32 @@ class AppHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(0),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        //color: const Color.fromARGB(255, 134, 134, 134),
+        borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
         children: [
           Container(
-            width: 60,
-            height: 60,
+            width: 50,
+            height: 50,
             decoration: const BoxDecoration(
-              color: Color(0xffd9ecff),
+              color: Color(0xffffffff),
               shape: BoxShape.circle,
             ),
-            child: const Icon(Icons.favorite, color: Colors.blue, size: 32),
+            child: const Icon(Icons.favorite, color: Color(0xff03070c), size: 25),
           ),
           const SizedBox(width: 16),
           Expanded(
             child: Text(
               title,
-              style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
           ),
-          Container(
-            width: 46,
-            height: 46,
-            decoration: const BoxDecoration(
-              color: Color(0xffd9ecff),
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(Icons.notifications_none),
-          ),
-          const SizedBox(width: 10),
           SizedBox(
-            width: 46,
-            height: 46,
+            width: 50,
+            height: 50,
             child: ElevatedButton(
               onPressed: onLogout,
               style: ElevatedButton.styleFrom(
@@ -60,6 +50,32 @@ class AppHeader extends StatelessWidget {
                 shape: const CircleBorder(),
               ),
               child: const Icon(Icons.logout),
+            ),
+          ),
+          const SizedBox(width: 10),
+          Container(
+            width: 50,
+            height: 50,
+            decoration: const BoxDecoration(
+              color: Color(0xffffffff),
+              shape: BoxShape.circle,
+            ),
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: const [
+                Center(child: Icon(Icons.notifications_none)),
+                Positioned(
+                  top: 2,
+                  right: 2,
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      shape: BoxShape.circle,
+                    ),
+                    child: SizedBox(width: 10, height: 10),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
