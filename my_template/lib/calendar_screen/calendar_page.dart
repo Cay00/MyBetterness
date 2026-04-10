@@ -5,6 +5,7 @@ import '../components/calendar/calendar_filter_chips.dart';
 import '../components/calendar/calendar_month_placeholder.dart';
 import '../components/calendar/calendar_view_toggle.dart';
 import '../data/calendar_mock_data.dart';
+import 'add_event_screen.dart';
 
 class CalendarPage extends StatefulWidget {
   const CalendarPage({super.key});
@@ -47,7 +48,8 @@ class _CalendarPageState extends State<CalendarPage> {
       return CalendarDayOption(
         label: labels[index],
         dayNumber: date.day,
-        isToday: date.day == now.day &&
+        isToday:
+            date.day == now.day &&
             date.month == now.month &&
             date.year == now.year,
         hasPlannedEvent: hasPlannedEvent,
@@ -211,8 +213,12 @@ class _CalendarPageState extends State<CalendarPage> {
           bottom: 0,
           child: FloatingActionButton.extended(
             onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Add event action placeholder')),
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      AddEventScreen(selectedDate: DateTime.now()),
+                ),
               );
             },
             backgroundColor: const Color(0xffef3d3d),
