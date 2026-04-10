@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../models/calendar_event.dart';
+import '../services/firebase/calendar_service.dart';
 
 class AddEventScreen extends StatefulWidget {
   final DateTime selectedDate;
@@ -11,6 +13,11 @@ class AddEventScreen extends StatefulWidget {
 
 class _AddEventScreenState extends State<AddEventScreen> {
   final _formKey = GlobalKey<FormState>();
+  final _calendarService = CalendarService();
+  bool _isLoading = false;
+
+  TimeOfDay _startTime = const TimeOfDay(hour: 9, minute: 0);
+  TimeOfDay _endTime = const TimeOfDay(hour: 10, minute: 0);
 
   late TextEditingController _titleController;
   late TextEditingController _descriptionController;
@@ -41,13 +48,46 @@ class _AddEventScreenState extends State<AddEventScreen> {
     super.dispose();
   }
 
-  void _validateAndMockSave() {
-    if (_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Formularz poprawny - gotowy do podpięcia logiki!'),
-        ),
+  Future<void> _saveEvent() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    setState(() => _isLoading = true);
+
+    try {
+      final startDateTime = DateTime(
+        _selectedDate.year,
+        _selectedDate.month,
+        _selectedDate.day,
+        _startTime.hour,
+        _startTime.minute,
       );
+
+      final endDateTime = DateTime(
+        _selectedDate.year,
+        _selectedDate.month,
+        _selectedDate.day,
+        _endTime.hour,
+        _endTime.minute,
+      );
+
+      final newEvent = CalendarEvent(
+        title: _titleController.text.trim(),
+        description: _descriptionController.text.trim(),
+        startTime: startDateTime,
+        endTime: endDateTime,
+        category: _selectedCategory,
+      );
+
+      await _calendarService.addEvent(newEvent);
+
+      if (!mounted) return;
+      Navigator.pop(context);
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Błąd zapisu: $e')));
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
     }
   }
 
@@ -104,7 +144,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: _validateAndMockSave,
+                  onPressed: _isLoading ? null : _saveEvent,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.redAccent,
                     shape: RoundedRectangleBorder(
