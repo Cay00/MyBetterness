@@ -20,15 +20,9 @@ class _DefaultScreenState extends State<DefaultScreen> {
   int currentIndex = 0;
 
   final List<String> headerTitles = const [
-<<<<<<< feat/find_help
     'MyBetterness',
     'Care Calendar',
     'Find Help',
-=======
-    '',
-    '',
-    'Screen2',
->>>>>>> main
     'Screen3',
     'Screen4',
   ];
