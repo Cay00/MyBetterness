@@ -91,7 +91,10 @@ class _CalendarPageState extends State<CalendarPage> {
 
   @override
   Widget build(BuildContext context) {
+    final bottomInset = MediaQuery.paddingOf(context).bottom;
+
     return Stack(
+      fit: StackFit.expand,
       children: [
         StreamBuilder<List<CalendarEvent>>(
           stream: _calendarService.getUserEvents(),
@@ -115,7 +118,7 @@ class _CalendarPageState extends State<CalendarPage> {
             }
 
             return SingleChildScrollView(
-              padding: const EdgeInsets.only(bottom: 110),
+              padding: EdgeInsets.only(bottom: 88 + bottomInset),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -249,9 +252,10 @@ class _CalendarPageState extends State<CalendarPage> {
           },
         ),
         Positioned(
-          right: 0,
-          bottom: 0,
+          right: 16,
+          bottom: 16 + bottomInset,
           child: FloatingActionButton.extended(
+            heroTag: 'calendar_add_event',
             onPressed: () {
               Navigator.push(
                 context,
