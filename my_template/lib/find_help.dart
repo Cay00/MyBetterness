@@ -11,10 +11,10 @@ class FindHelpPage extends StatefulWidget {
 
 class _FindHelpPageState extends State<FindHelpPage> {
   final List<String> _filters = const [
-    'All',
-    'Locations',
-    'Skills',
-    'Rating',
+    'Wszystko',
+    'Miejsca',
+    'Umiejętności',
+    'Ocena',
   ];
 
   late String _selectedFilter;
@@ -36,7 +36,7 @@ class _FindHelpPageState extends State<FindHelpPage> {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: TextField(
             decoration: InputDecoration(
-              hintText: 'Search…',
+              hintText: 'Szukaj…',
               hintStyle: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
@@ -79,7 +79,7 @@ class _FindHelpPageState extends State<FindHelpPage> {
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 16),
           child: Text(
-            'Filters',
+            'Filtry',
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w700,
@@ -102,7 +102,7 @@ class _FindHelpPageState extends State<FindHelpPage> {
           child: Row(
             children: [
               const Text(
-                'People',
+                'Osoby',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w700,
@@ -110,7 +110,7 @@ class _FindHelpPageState extends State<FindHelpPage> {
               ),
               const Spacer(),
               Text(
-                '10 nearby',
+                '10 w pobliżu',
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w700,
@@ -154,7 +154,7 @@ class _FindHelpPageState extends State<FindHelpPage> {
                             children: [
                               Expanded(
                                 child: Text(
-                                  'John Doe',
+                                  'Jan Kowalski',
                                   style: const TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w800,
@@ -185,7 +185,7 @@ class _FindHelpPageState extends State<FindHelpPage> {
                           ),
                           const SizedBox(height: 8),
                           const Text(
-                            'Nurse',
+                            'Pielęgniarka',
                             style: TextStyle(
                               fontSize: 14,
                               color: Color(0xff222222),
@@ -211,7 +211,7 @@ class _FindHelpPageState extends State<FindHelpPage> {
                                 ),
                                 SizedBox(width: 6),
                                 Text(
-                                  '5 km away',
+                                  '5 km stąd',
                                   style: TextStyle(
                                     fontSize: 13,
                                     fontWeight: FontWeight.w700,

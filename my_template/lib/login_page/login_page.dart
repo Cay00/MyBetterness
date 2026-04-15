@@ -36,14 +36,14 @@ class _LoginPageState extends State<LoginPage> {
         email.isEmpty ||
         password.isEmpty) {
       setState(() {
-        error = 'uzupelnij wszystkie pola';
+        error = 'Uzupełnij wszystkie pola';
       });
       return;
     }
 
     if (password.length < 6) {
       setState(() {
-        error = 'haslo musi miec minimum 6 znakow';
+        error = 'Hasło musi mieć minimum 6 znaków';
       });
       return;
     }
@@ -85,7 +85,7 @@ class _LoginPageState extends State<LoginPage> {
       }
     } on FirebaseAuthException catch (e) {
       setState(() {
-        error = e.message ?? 'blad rejestracji';
+        error = e.message ?? 'Błąd rejestracji';
       });
     }
   }
@@ -96,14 +96,14 @@ class _LoginPageState extends State<LoginPage> {
 
     if (email.isEmpty || password.isEmpty) {
       setState(() {
-        error = 'uzupelnij email i haslo';
+        error = 'Uzupełnij e-mail i hasło';
       });
       return;
     }
 
     if (password.length < 6) {
       setState(() {
-        error = 'haslo musi miec minimum 6 znakow';
+        error = 'Hasło musi mieć minimum 6 znaków';
       });
       return;
     }
@@ -122,7 +122,7 @@ class _LoginPageState extends State<LoginPage> {
       );
     } on FirebaseAuthException catch (e) {
       setState(() {
-        error = e.message ?? 'blad logowania';
+        error = e.message ?? 'Błąd logowania';
       });
     }
   }
@@ -141,43 +141,43 @@ class _LoginPageState extends State<LoginPage> {
                   TextField(
                     controller: nameController,
                     decoration: const InputDecoration(
-                      labelText: 'imie i nazwisko',
+                      labelText: 'Imię i nazwisko',
                     ),
                   ),
                   const SizedBox(height: 12),
                   TextField(
                     controller: heightController,
                     keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(labelText: 'wzrost'),
+                    decoration: const InputDecoration(labelText: 'Wzrost (cm)'),
                   ),
                   const SizedBox(height: 12),
                   TextField(
                     controller: weightController,
                     keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(labelText: 'waga'),
+                    decoration: const InputDecoration(labelText: 'Waga (kg)'),
                   ),
                   const SizedBox(height: 12),
                   TextField(
                     controller: ageController,
                     keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(labelText: 'wiek'),
+                    decoration: const InputDecoration(labelText: 'Wiek'),
                   ),
                   const SizedBox(height: 12),
                 ],
                 TextField(
                   controller: emailController,
-                  decoration: const InputDecoration(labelText: 'email'),
+                  decoration: const InputDecoration(labelText: 'E-mail'),
                 ),
                 const SizedBox(height: 12),
                 TextField(
                   controller: passwordController,
                   obscureText: true,
-                  decoration: const InputDecoration(labelText: 'haslo'),
+                  decoration: const InputDecoration(labelText: 'Hasło'),
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: isRegister ? register : login,
-                  child: Text(isRegister ? 'zarejestruj' : 'zaloguj'),
+                  child: Text(isRegister ? 'Zarejestruj się' : 'Zaloguj się'),
                 ),
                 const SizedBox(height: 12),
                 Text(error, style: const TextStyle(color: Colors.red)),

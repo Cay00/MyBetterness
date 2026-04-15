@@ -7,7 +7,7 @@ class Screen4Page extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Center(
       child: Text(
-        'screen 4',
+        'Profil',
         style: TextStyle(fontSize: 32, fontWeight: FontWeight.w700),
       ),
     );

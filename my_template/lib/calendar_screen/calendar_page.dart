@@ -7,6 +7,7 @@ import '../components/calendar/calendar_view_toggle.dart';
 import 'add_event_screen.dart';
 import '../models/calendar_event.dart';
 import '../services/firebase/calendar_service.dart';
+import '../utils/calendar_category_localization.dart';
 
 class CalendarPage extends StatefulWidget {
   const CalendarPage({super.key});
@@ -18,12 +19,12 @@ class CalendarPage extends StatefulWidget {
 class _CalendarPageState extends State<CalendarPage> {
   final CalendarService _calendarService = CalendarService();
   final List<String> _calendarFilters = [
-    'All',
-    'Doctor',
-    'Rehab',
-    'Medications',
-    'Meals',
-    'Other',
+    'Wszystko',
+    'Lekarz',
+    'Rehabilitacja',
+    'Leki',
+    'Posiłki',
+    'Inne',
   ];
 
   CalendarViewMode selectedMode = CalendarViewMode.daily;
@@ -49,7 +50,7 @@ class _CalendarPageState extends State<CalendarPage> {
   }
 
   List<CalendarDayOption> _buildDays(List<CalendarEvent> allEvents) {
-    const labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    const labels = ['Pn', 'Wt', 'Śr', 'Cz', 'Pt', 'So', 'Nd'];
     final now = DateTime.now();
     final start = now.subtract(Duration(days: now.weekday - 1));
 
@@ -75,14 +76,14 @@ class _CalendarPageState extends State<CalendarPage> {
   }
 
   Color _getCategoryColor(String category) {
-    switch (category) {
-      case 'Doctor':
+    switch (polishCalendarCategoryLabel(category)) {
+      case 'Lekarz':
         return const Color(0xff5e6aff);
-      case 'Rehab':
+      case 'Rehabilitacja':
         return const Color(0xff4caf50);
-      case 'Medications':
+      case 'Leki':
         return const Color(0xffff9800);
-      case 'Meals':
+      case 'Posiłki':
         return const Color(0xffe91e63);
       default:
         return const Color(0xff9e9e9e);
@@ -111,9 +112,13 @@ class _CalendarPageState extends State<CalendarPage> {
 
             visibleEvents.sort((a, b) => a.startTime.compareTo(b.startTime));
 
-            if (selectedFilter != 'All') {
+            if (selectedFilter != 'Wszystko') {
               visibleEvents = visibleEvents
-                  .where((e) => e.category == selectedFilter)
+                  .where(
+                    (e) =>
+                        polishCalendarCategoryLabel(e.category) ==
+                        selectedFilter,
+                  )
                   .toList();
             }
 
@@ -135,7 +140,7 @@ class _CalendarPageState extends State<CalendarPage> {
                     const Padding(
                       padding: EdgeInsets.only(left: 16),
                       child: Text(
-                        'This Week',
+                        'Ten tydzień',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w700,
@@ -153,7 +158,7 @@ class _CalendarPageState extends State<CalendarPage> {
                     const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16),
                       child: Text(
-                        'Filters',
+                        'Filtry',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w700,
@@ -176,7 +181,7 @@ class _CalendarPageState extends State<CalendarPage> {
                       child: Row(
                         children: [
                           const Text(
-                            'Events',
+                            'Wydarzenia',
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w700,
@@ -184,7 +189,7 @@ class _CalendarPageState extends State<CalendarPage> {
                           ),
                           const Spacer(),
                           Text(
-                            '${visibleEvents.length} planned',
+                            '${visibleEvents.length} zaplanowanych',
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w700,
@@ -211,7 +216,7 @@ class _CalendarPageState extends State<CalendarPage> {
                             borderRadius: BorderRadius.circular(16),
                           ),
                           child: const Text(
-                            'No events in this category for the selected day yet.',
+                            'Brak wydarzeń w tej kategorii w wybranym dniu.',
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
@@ -232,7 +237,9 @@ class _CalendarPageState extends State<CalendarPage> {
                                     : 'Brak opisu',
                                 timeLabel:
                                     '${event.startTime.hour.toString().padLeft(2, '0')}:${event.startTime.minute.toString().padLeft(2, '0')} - ${event.endTime.hour.toString().padLeft(2, '0')}:${event.endTime.minute.toString().padLeft(2, '0')}',
-                                category: event.category,
+                                category: polishCalendarCategoryLabel(
+                                  event.category,
+                                ),
                                 accentColor: _getCategoryColor(event.category),
                               ),
                               const SizedBox(height: 16),
@@ -269,7 +276,7 @@ class _CalendarPageState extends State<CalendarPage> {
             foregroundColor: Colors.white,
             icon: const Icon(Icons.add),
             label: const Text(
-              'Add Event',
+              'Dodaj wydarzenie',
               style: TextStyle(fontWeight: FontWeight.w700),
             ),
           ),

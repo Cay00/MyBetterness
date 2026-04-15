@@ -26,14 +26,14 @@ class _AddEventScreenState extends State<AddEventScreen> {
   late TextEditingController _descriptionController;
 
   late DateTime _selectedDate;
-  String _selectedCategory = 'Doctor';
+  String _selectedCategory = 'Lekarz';
 
   final List<String> _categories = [
-    'Doctor',
-    'Rehab',
-    'Medications',
-    'Meals',
-    'Other',
+    'Lekarz',
+    'Rehabilitacja',
+    'Leki',
+    'Posiłki',
+    'Inne',
   ];
 
   static const Color _bodyText = Color(0xff222222);
@@ -126,11 +126,9 @@ class _AddEventScreenState extends State<AddEventScreen> {
   }
 
   String _formatDate(DateTime d) {
-    const months = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
-    ];
-    return '${months[d.month - 1]} ${d.day}, ${d.year}';
+    final dd = d.day.toString().padLeft(2, '0');
+    final mm = d.month.toString().padLeft(2, '0');
+    return '$dd.$mm.${d.year}';
   }
 
   Future<void> _saveEvent() async {
@@ -172,7 +170,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            'Could not save: $e',
+            'Nie udało się zapisać: $e',
             style: const TextStyle(fontWeight: FontWeight.w600),
           ),
           behavior: SnackBarBehavior.floating,
@@ -268,7 +266,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
         shadowColor: Colors.black26,
         surfaceTintColor: Colors.transparent,
         title: const Text(
-          'Add event',
+          'Dodaj wydarzenie',
           style: TextStyle(
             fontWeight: FontWeight.w700,
             fontSize: 17,
@@ -284,7 +282,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Add something to your care calendar.',
+                'Dodaj wpis do kalendarza opieki.',
                 style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w600,
@@ -293,7 +291,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-              _sectionLabel('Title'),
+              _sectionLabel('Tytuł'),
               TextFormField(
                 controller: _titleController,
                 style: const TextStyle(
@@ -301,15 +299,17 @@ class _AddEventScreenState extends State<AddEventScreen> {
                   fontWeight: FontWeight.w600,
                   color: _bodyText,
                 ),
-                decoration: _fieldDecoration('Event name'),
+                decoration: _fieldDecoration('Nazwa wydarzenia'),
                 textCapitalization: TextCapitalization.sentences,
                 validator: (value) =>
-                    value == null || value.trim().isEmpty ? 'Enter a title' : null,
+                    value == null || value.trim().isEmpty
+                        ? 'Podaj tytuł'
+                        : null,
               ),
               const SizedBox(height: 20),
-              _sectionLabel('When'),
+              _sectionLabel('Termin'),
               _selectTile(
-                label: 'Date',
+                label: 'Data',
                 value: _formatDate(_selectedDate),
                 icon: Icons.calendar_month_rounded,
                 onTap: _pickDate,
@@ -320,7 +320,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                 children: [
                   Expanded(
                     child: _selectTile(
-                      label: 'Starts',
+                      label: 'Początek',
                       value: _startTime.format(context),
                       icon: Icons.schedule_rounded,
                       onTap: _pickStartTime,
@@ -329,7 +329,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                   const SizedBox(width: 12),
                   Expanded(
                     child: _selectTile(
-                      label: 'Ends',
+                      label: 'Koniec',
                       value: _endTime.format(context),
                       icon: Icons.schedule_rounded,
                       onTap: _pickEndTime,
@@ -338,7 +338,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                 ],
               ),
               const SizedBox(height: 20),
-              _sectionLabel('Description'),
+              _sectionLabel('Opis'),
               TextFormField(
                 controller: _descriptionController,
                 style: const TextStyle(
@@ -347,14 +347,14 @@ class _AddEventScreenState extends State<AddEventScreen> {
                   color: _bodyText,
                 ),
                 decoration: _fieldDecoration(
-                  'Notes',
-                  hint: 'Optional details',
+                  'Notatki',
+                  hint: 'Opcjonalne szczegóły',
                 ),
                 maxLines: 4,
                 textCapitalization: TextCapitalization.sentences,
               ),
               const SizedBox(height: 20),
-              _sectionLabel('Category'),
+              _sectionLabel('Kategoria'),
               CalendarFilterChips(
                 filters: _categories,
                 selectedFilter: _selectedCategory,
@@ -386,7 +386,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                           ),
                         )
                       : const Text(
-                          'Save event',
+                          'Zapisz wydarzenie',
                           style: TextStyle(
                             fontSize: 17,
                             fontWeight: FontWeight.w800,

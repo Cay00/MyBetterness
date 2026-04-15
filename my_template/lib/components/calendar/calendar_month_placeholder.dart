@@ -5,7 +5,7 @@ class CalendarMonthPlaceholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    const weekDays = ['Pn', 'Wt', 'Śr', 'Cz', 'Pt', 'So', 'Nd'];
     const days = [
       '', '', '', '', '', '1', '2',
       '3', '4', '5', '6', '7', '8', '9',
@@ -25,7 +25,7 @@ class CalendarMonthPlaceholder extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'March 2026',
+            'Marzec 2026',
             style: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.w800,
@@ -97,7 +97,7 @@ class CalendarMonthPlaceholder extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
             ),
             child: const Text(
-              'Monthly view placeholder. Event logic can be added later.',
+              'Widok miesięczny — placeholder. Logikę wydarzeń można dodać później.',
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,

@@ -21,10 +21,10 @@ class _DefaultScreenState extends State<DefaultScreen> {
 
   final List<String> headerTitles = const [
     'MyBetterness',
-    'Care Calendar',
-    'Find Help',
-    'Screen3',
-    'Screen4',
+    'Kalendarz opieki',
+    'Znajdź pomoc',
+    'Informacje o zdrowiu',
+    'Profil',
   ];
 
   final List<Widget> tabs = const [

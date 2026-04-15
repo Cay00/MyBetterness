@@ -7,7 +7,7 @@ class Screen3Page extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Center(
       child: Text(
-        'screen 3',
+        'Informacje o zdrowiu',
         style: TextStyle(fontSize: 32, fontWeight: FontWeight.w700),
       ),
     );

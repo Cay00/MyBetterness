@@ -23,7 +23,7 @@ class HomePageContent extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'Good morning',
+            'Dzień dobry',
             style: TextStyle(
               fontSize: 28,
               fontWeight: FontWeight.w800,
@@ -32,7 +32,7 @@ class HomePageContent extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           Text(
-            'Here is your health overview for today.',
+            'Oto podsumowanie Twojego zdrowia na dziś.',
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w600,
@@ -49,7 +49,7 @@ class HomePageContent extends StatelessWidget {
             ),
             child: const Center(
               child: Text(
-                '✱ SOS EMERGENCY',
+                '✱ SOS — POGOTOWIE',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 20,
@@ -70,7 +70,7 @@ class HomePageContent extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  'Request Help',
+                  'Poproś o pomoc',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 24,
@@ -79,7 +79,7 @@ class HomePageContent extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 const Text(
-                  'Need support with daily tasks?\nSomeone can help you.',
+                  'Potrzebujesz wsparcia w codziennych sprawach?\nKtoś może Ci pomóc.',
                   style: TextStyle(color: Colors.white70, fontSize: 16),
                 ),
                 const SizedBox(height: 18),
@@ -93,7 +93,7 @@ class HomePageContent extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: const Text(
-                    'Find Help',
+                    'Znajdź pomoc',
                     style: TextStyle(
                       color: Color(0xff2f6df6),
                       fontWeight: FontWeight.w800,
@@ -105,7 +105,7 @@ class HomePageContent extends StatelessWidget {
           ),
           const SizedBox(height: 24),
           const Text(
-            'Vitals & wellness',
+            'Parametry i samopoczucie',
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w700,
@@ -119,10 +119,10 @@ class HomePageContent extends StatelessWidget {
                 child: _HealthMetricCard(
                   icon: Icons.monitor_weight_outlined,
                   accent: const Color(0xff5e6aff),
-                  label: 'Weight',
+                  label: 'Waga',
                   value: '72.4',
                   unit: 'kg',
-                  hint: 'Stable vs last week',
+                  hint: 'Stabilnie vs ub. tydzień',
                 ),
               ),
               const SizedBox(width: 12),
@@ -130,10 +130,10 @@ class HomePageContent extends StatelessWidget {
                 child: _HealthMetricCard(
                   icon: Icons.bloodtype_outlined,
                   accent: const Color(0xffe91e63),
-                  label: 'Glucose',
+                  label: 'Glukoza',
                   value: '98',
                   unit: 'mg/dL',
-                  hint: 'Fasting · morning',
+                  hint: 'Na czczo · rano',
                 ),
               ),
             ],
@@ -145,10 +145,10 @@ class HomePageContent extends StatelessWidget {
                 child: _HealthMetricCard(
                   icon: Icons.favorite_outline,
                   accent: const Color(0xffef3d3d),
-                  label: 'Blood pressure',
+                  label: 'Ciśnienie',
                   value: '120/78',
                   unit: 'mmHg',
-                  hint: 'Resting',
+                  hint: 'W spoczynku',
                 ),
               ),
               const SizedBox(width: 12),
@@ -162,7 +162,7 @@ class HomePageContent extends StatelessWidget {
           ),
           const SizedBox(height: 24),
           const Text(
-            'More signals',
+            'Więcej sygnałów',
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w700,
@@ -189,7 +189,7 @@ class HomePageContent extends StatelessWidget {
                 _InfoRow(
                   icon: Icons.favorite_border,
                   iconColor: Color(0xffff9800),
-                  label: 'Heart rate',
+                  label: 'Tętno',
                   value: '72 bpm',
                 ),
                 Divider(height: 22),
@@ -203,8 +203,8 @@ class HomePageContent extends StatelessWidget {
                 _InfoRow(
                   icon: Icons.medication_outlined,
                   iconColor: Color(0xff2f6df6),
-                  label: 'Medications today',
-                  value: '3 / 3 taken',
+                  label: 'Leki dziś',
+                  value: '3 / 3 przyjęte',
                 ),
               ],
             ),
@@ -227,7 +227,7 @@ class HomePageContent extends StatelessWidget {
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    'Values shown are examples. Connect a device or log entries to personalize this screen.',
+                    'Podane wartości są przykładowe. Podłącz urządzenie lub uzupełnij wpisy, aby spersonalizować ten ekran.',
                     style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
@@ -374,7 +374,7 @@ class _HydrationCard extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           const Text(
-            'Hydration',
+            'Nawodnienie',
             style: TextStyle(
               fontSize: 13,
               fontWeight: FontWeight.w700,
