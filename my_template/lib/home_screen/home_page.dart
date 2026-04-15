@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import '../components/calendar/calendar_day_picker.dart';
-import '../components/calendar/calendar_event_card.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      backgroundColor: Color.fromARGB(255, 208, 232, 255),
       body: SafeArea(
-        child: Padding(padding: EdgeInsets.all(20), child: HomePageContent()),
+        child: HomePageContent(),
       ),
     );
   }
@@ -17,65 +14,57 @@ class HomePage extends StatelessWidget {
 
 class HomePageContent extends StatelessWidget {
   const HomePageContent({super.key});
-  List<CalendarDayOption> _getDays() {
-    final now = DateTime.now();
-    final start = now.subtract(Duration(days: now.weekday - 1));
-    const labels = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
-    return List.generate(7, (index) {
-      final date = start.add(Duration(days: index));
-      return CalendarDayOption(
-        label: labels[index],
-        dayNumber: date.day,
-        isToday: date.day == now.day,
-      );
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
-    final days = _getDays();
     return SingleChildScrollView(
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 110),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            "Good Morning, User!",
+            'Good morning',
             style: TextStyle(
               fontSize: 28,
-              fontWeight: FontWeight.bold,
-              color: Color(0xff12243d),
+              fontWeight: FontWeight.w800,
+              color: Color(0xff222222),
             ),
           ),
-          const Text(
-            "Ready for your care tasks today.",
-            style: TextStyle(fontSize: 16, color: Colors.grey),
+          const SizedBox(height: 6),
+          Text(
+            'Here is your health overview for today.',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: const Color(0xff222222).withValues(alpha: 0.65),
+            ),
           ),
-          const SizedBox(height: 25),
+          const SizedBox(height: 20),
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.symmetric(vertical: 20),
+            padding: const EdgeInsets.symmetric(vertical: 18),
             decoration: BoxDecoration(
               color: const Color(0xffef3d3d),
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(16),
             ),
             child: const Center(
               child: Text(
                 '✱ SOS EMERGENCY',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
                 ),
               ),
             ),
           ),
-          const SizedBox(height: 25),
+          const SizedBox(height: 16),
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.all(22),
             decoration: BoxDecoration(
               color: const Color(0xff2f6df6),
-              borderRadius: BorderRadius.circular(32),
+              borderRadius: BorderRadius.circular(24),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -84,19 +73,19 @@ class HomePageContent extends StatelessWidget {
                   'Request Help',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 26,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w800,
                   ),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 10),
                 const Text(
                   'Need support with daily tasks?\nSomeone can help you.',
                   style: TextStyle(color: Colors.white70, fontSize: 16),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 18),
                 Container(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 24,
+                    horizontal: 22,
                     vertical: 12,
                   ),
                   decoration: BoxDecoration(
@@ -107,210 +96,361 @@ class HomePageContent extends StatelessWidget {
                     'Find Help',
                     style: TextStyle(
                       color: Color(0xff2f6df6),
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w800,
                     ),
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: 24),
+          const Text(
+            'Vitals & wellness',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w700,
+              color: Color(0xff222222),
+            ),
+          ),
+          const SizedBox(height: 12),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                "Care Calendar",
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xff12243d),
+              Expanded(
+                child: _HealthMetricCard(
+                  icon: Icons.monitor_weight_outlined,
+                  accent: const Color(0xff5e6aff),
+                  label: 'Weight',
+                  value: '72.4',
+                  unit: 'kg',
+                  hint: 'Stable vs last week',
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.all(4),
-                decoration: BoxDecoration(
-                  color: Colors.blue.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 8,
-                      ),
-                      decoration: BoxDecoration(
-                        color: const Color(0xff2f6df6),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: const Text(
-                        "Daily",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12),
-                      child: Text(
-                        "Monthly",
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                    ),
-                  ],
+              const SizedBox(width: 12),
+              Expanded(
+                child: _HealthMetricCard(
+                  icon: Icons.bloodtype_outlined,
+                  accent: const Color(0xffe91e63),
+                  label: 'Glucose',
+                  value: '98',
+                  unit: 'mg/dL',
+                  hint: 'Fasting · morning',
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 25),
+          const SizedBox(height: 12),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: days.asMap().entries.map((entry) {
-              int idx = entry.key;
-              var day = entry.value;
-              bool isSelected = idx == 3;
-              return Column(
-                children: [
-                  Text(
-                    day.label,
-                    style: TextStyle(
-                      color: isSelected ? const Color(0xff2f6df6) : Colors.grey,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  Container(
-                    width: 42,
-                    height: 42,
-                    decoration: BoxDecoration(
-                      //upda
-                      color: isSelected
-                          ? const Color(0xff2f6df6)
-                          : Colors.transparent,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Center(
-                      child: Text(
-                        "${day.dayNumber}",
-                        style: TextStyle(
-                          color: isSelected
-                              ? Colors.white
-                              : const Color(0xff12243d),
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                  if (isSelected)
-                    Container(
-                      margin: const EdgeInsets.only(top: 6),
-                      width: 4,
-                      height: 4,
-                      decoration: const BoxDecoration(
-                        color: Color(0xff2f6df6),
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                ],
-              );
-            }).toList(),
+            children: [
+              Expanded(
+                child: _HealthMetricCard(
+                  icon: Icons.favorite_outline,
+                  accent: const Color(0xffef3d3d),
+                  label: 'Blood pressure',
+                  value: '120/78',
+                  unit: 'mmHg',
+                  hint: 'Resting',
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: _HydrationCard(
+                  currentLiters: 1.6,
+                  goalLiters: 2.0,
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 24),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            decoration: const BoxDecoration(
-              color: Color(0xff2f6df6),
-              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          const Text(
+            'More signals',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w700,
+              color: Color(0xff222222),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                Text(
-                  "1:30 AM - 7:00 PM",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  "URGENT",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 10,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const CalendarEventCard(
-            title: "Medication Plan",
-            subtitle: "12:00 - 7:30 AM",
-            timeLabel: "",
-            category: "",
-            accentColor: Colors.transparent,
           ),
           const SizedBox(height: 12),
-          const CalendarEventCard(
-            title: "Rehab Session",
-            subtitle: "Physical Therapy - Dr. Soan",
-            timeLabel: "4:00 PM",
-            category: "Health",
-            accentColor: Colors.blue,
-          ),
-          const SizedBox(height: 32),
           Container(
-            padding: const EdgeInsets.all(24),
+            width: double.infinity,
+            padding: const EdgeInsets.all(18),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(28),
+              borderRadius: BorderRadius.circular(24),
             ),
             child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    Text(
-                      "Recent Vitals",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      "See details",
-                      style: TextStyle(
-                        color: Color(0xff2f6df6),
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
+              children: const [
+                _InfoRow(
+                  icon: Icons.air_outlined,
+                  iconColor: Color(0xff4caf50),
+                  label: 'SpO₂',
+                  value: '98%',
                 ),
-                const SizedBox(height: 20),
-                Container(
-                  height: 120,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: Color(0xfff1f1f1),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: const Center(
-                    child: Icon(
-                      Icons.bar_chart,
-                      size: 50,
-                      color: Color(0xff2f6df6),
+                Divider(height: 22),
+                _InfoRow(
+                  icon: Icons.favorite_border,
+                  iconColor: Color(0xffff9800),
+                  label: 'Heart rate',
+                  value: '72 bpm',
+                ),
+                Divider(height: 22),
+                _InfoRow(
+                  icon: Icons.bedtime_outlined,
+                  iconColor: Color(0xff9c27b0),
+                  label: 'Sleep',
+                  value: '7 h 20 m',
+                ),
+                Divider(height: 22),
+                _InfoRow(
+                  icon: Icons.medication_outlined,
+                  iconColor: Color(0xff2f6df6),
+                  label: 'Medications today',
+                  value: '3 / 3 taken',
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: const Color(0xffeff4ff),
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Row(
+              children: [
+                const Icon(
+                  Icons.info_outline,
+                  color: Color(0xff2f6df6),
+                  size: 22,
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    'Values shown are examples. Connect a device or log entries to personalize this screen.',
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                      color: const Color(0xff222222).withValues(alpha: 0.85),
+                      height: 1.35,
                     ),
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 50),
         ],
       ),
+    );
+  }
+}
+
+class _HealthMetricCard extends StatelessWidget {
+  const _HealthMetricCard({
+    required this.icon,
+    required this.accent,
+    required this.label,
+    required this.value,
+    required this.unit,
+    required this.hint,
+  });
+
+  final IconData icon;
+  final Color accent;
+  final String label;
+  final String value;
+  final String unit;
+  final String hint;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(24),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: accent.withValues(alpha: 0.14),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(icon, size: 22, color: accent),
+              ),
+              const Spacer(),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w700,
+              color: Color(0xff222222),
+            ),
+          ),
+          const SizedBox(height: 4),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.baseline,
+            textBaseline: TextBaseline.alphabetic,
+            children: [
+              Text(
+                value,
+                style: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w800,
+                  color: Color(0xff222222),
+                ),
+              ),
+              const SizedBox(width: 4),
+              Text(
+                unit,
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700,
+                  color: const Color(0xff222222).withValues(alpha: 0.55),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Text(
+            hint,
+            style: TextStyle(
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
+              color: const Color(0xff222222).withValues(alpha: 0.5),
+              height: 1.2,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _HydrationCard extends StatelessWidget {
+  const _HydrationCard({
+    required this.currentLiters,
+    required this.goalLiters,
+  });
+
+  final double currentLiters;
+  final double goalLiters;
+
+  @override
+  Widget build(BuildContext context) {
+    final progress = (currentLiters / goalLiters).clamp(0.0, 1.0);
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(24),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: const Color(0xff4caf50).withValues(alpha: 0.14),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: const Icon(
+                  Icons.water_drop_outlined,
+                  size: 22,
+                  color: Color(0xff4caf50),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          const Text(
+            'Hydration',
+            style: TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w700,
+              color: Color(0xff222222),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            '${currentLiters.toStringAsFixed(1)} / ${goalLiters.toStringAsFixed(1)} L',
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w800,
+              color: Color(0xff222222),
+            ),
+          ),
+          const SizedBox(height: 10),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(999),
+            child: LinearProgressIndicator(
+              value: progress,
+              minHeight: 8,
+              backgroundColor: const Color(0xffe8eef5),
+              color: const Color(0xff4caf50),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _InfoRow extends StatelessWidget {
+  const _InfoRow({
+    required this.icon,
+    required this.iconColor,
+    required this.label,
+    required this.value,
+  });
+
+  final IconData icon;
+  final Color iconColor;
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: iconColor.withValues(alpha: 0.12),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Icon(icon, size: 20, color: iconColor),
+        ),
+        const SizedBox(width: 14),
+        Expanded(
+          child: Text(
+            label,
+            style: const TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w700,
+              color: Color(0xff222222),
+            ),
+          ),
+        ),
+        Text(
+          value,
+          style: const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w800,
+            color: Color(0xff222222),
+          ),
+        ),
+      ],
     );
   }
 }
