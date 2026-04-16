@@ -21,7 +21,6 @@ class _MapScreenState extends State<MapScreen> {
   LatLng _center = _fallbackCenter;
   List<Marker> _pharmacyMarkers = const [];
   String? _errorMessage;
-  bool _usedFallback = false;
 
   @override
   void initState() {
@@ -79,7 +78,6 @@ class _MapScreenState extends State<MapScreen> {
     setState(() {
       _isLoading = true;
       _errorMessage = null;
-      _usedFallback = false;
     });
 
     try {
@@ -97,16 +95,29 @@ class _MapScreenState extends State<MapScreen> {
       });
 
       _mapController.move(center, 13);
-    } catch (_) {
+    } catch (e) {
       if (!mounted) {
         return;
       }
+
+      late String msg;
+      if (e.toString().contains('no_pharmacies')) {
+        msg = 'Nie znaleziono aptek w tej okolicy.';
+      } else if (e.toString().contains('network_error') ||
+          e.toString().contains('Connection')) {
+        msg = 'Nie udało się pobrać aptek z OpenStreetMap.';
+      } else if (e.toString().contains('Location')) {
+        msg =
+            'Nie udało się pobrać lokalizacji. Pokazuję apteki dla domyślnego obszaru.';
+      } else {
+        msg =
+            'Nie udało się pobrać lokalizacji. Pokazuję apteki dla domyślnego obszaru.';
+      }
+
       setState(() {
         _center = _fallbackCenter;
         _pharmacyMarkers = const [];
-        _errorMessage =
-            'Nie udało się pobrać lokalizacji. Pokazuję apteki dla domyślnego obszaru.';
-        _usedFallback = true;
+        _errorMessage = msg;
       });
       _mapController.move(_fallbackCenter, 13);
     } finally {
@@ -175,15 +186,20 @@ class _MapScreenState extends State<MapScreen> {
           continue;
         }
 
+        final name = _readName(item);
+
         markers.add(
           Marker(
             point: LatLng(lat, lon),
             width: 30,
             height: 30,
-            child: const Icon(
-              Icons.local_pharmacy,
-              color: Colors.green,
-              size: 30,
+            child: Tooltip(
+              message: name ?? 'Apteka',
+              child: const Icon(
+                Icons.local_pharmacy,
+                color: Colors.green,
+                size: 30,
+              ),
             ),
           ),
         );
@@ -221,6 +237,18 @@ class _MapScreenState extends State<MapScreen> {
     final center = item['center'];
     if (center is Map<String, dynamic> && center['lon'] is num) {
       return (center['lon'] as num).toDouble();
+    }
+    return null;
+  }
+
+  String? _readName(Map<String, dynamic> item) {
+    final tags = item['tags'] as Map<String, dynamic>?;
+    if (tags == null) {
+      return null;
+    }
+    final name = tags['name'];
+    if (name is String) {
+      return name;
     }
     return null;
   }
