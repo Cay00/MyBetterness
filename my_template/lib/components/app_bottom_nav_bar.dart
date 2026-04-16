@@ -3,8 +3,6 @@ import 'package:flutter/services.dart';
 
 import '../theme/app_theme.dart';
 
-/// Full-width bottom bar: dark background, white icons; the selected tab sits in a
-/// white horizontal pill with a dark icon — aligned with app typography colors.
 class AppBottomNavBar extends StatelessWidget {
   const AppBottomNavBar({
     super.key,
@@ -27,7 +25,7 @@ class AppBottomNavBar extends StatelessWidget {
       child: SafeArea(
         top: false,
         child: SizedBox(
-          height: 64,
+          height: 70,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
             child: Row(
