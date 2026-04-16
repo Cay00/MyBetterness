@@ -13,7 +13,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  final nameController = TextEditingController();
+  final firstNameController = TextEditingController();
+  final lastNameController = TextEditingController();
   final heightController = TextEditingController();
   final weightController = TextEditingController();
   final ageController = TextEditingController();
@@ -24,12 +25,14 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> register() async {
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
-    final name = nameController.text.trim();
+    final imie = firstNameController.text.trim();
+    final nazwisko = lastNameController.text.trim();
     final height = heightController.text.trim();
     final weight = weightController.text.trim();
     final age = ageController.text.trim();
 
-    if (name.isEmpty ||
+    if (imie.isEmpty ||
+        nazwisko.isEmpty ||
         height.isEmpty ||
         weight.isEmpty ||
         age.isEmpty ||
@@ -58,7 +61,9 @@ class _LoginPageState extends State<LoginPage> {
         await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
           'uid': user.uid,
           'email': email,
-          'imieNazwisko': name,
+          'imie': imie,
+          'nazwisko': nazwisko,
+          'imieNazwisko': '$imie $nazwisko'.trim(),
           'wzrost': height,
           'waga': weight,
           'wiek': age,
@@ -77,7 +82,8 @@ class _LoginPageState extends State<LoginPage> {
           error = '';
           emailController.clear();
           passwordController.clear();
-          nameController.clear();
+          firstNameController.clear();
+          lastNameController.clear();
           heightController.clear();
           weightController.clear();
           ageController.clear();
@@ -139,9 +145,18 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 if (isRegister) ...[
                   TextField(
-                    controller: nameController,
+                    controller: firstNameController,
+                    textCapitalization: TextCapitalization.words,
                     decoration: const InputDecoration(
-                      labelText: 'Imię i nazwisko',
+                      labelText: 'Imię',
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  TextField(
+                    controller: lastNameController,
+                    textCapitalization: TextCapitalization.words,
+                    decoration: const InputDecoration(
+                      labelText: 'Nazwisko',
                     ),
                   ),
                   const SizedBox(height: 12),
