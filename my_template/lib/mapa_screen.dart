@@ -90,12 +90,11 @@ class _MapScreenState extends State<MapScreen> {
         });
       }
     } finally {
-      if (!mounted) {
-        return;
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
       }
-      setState(() {
-        _isLoading = false;
-      });
     }
   }
 }
