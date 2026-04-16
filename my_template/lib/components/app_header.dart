@@ -4,11 +4,9 @@ class AppHeader extends StatelessWidget {
   const AppHeader({
     super.key,
     required this.title,
-    required this.onLogout,
   });
 
   final String title;
-  final VoidCallback onLogout;
 
   @override
   Widget build(BuildContext context) {
@@ -35,21 +33,6 @@ class AppHeader extends StatelessWidget {
             child: Text(
               title,
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-          ),
-          SizedBox(
-            width: 50,
-            height: 50,
-            child: ElevatedButton(
-              onPressed: onLogout,
-              style: ElevatedButton.styleFrom(
-                elevation: 0,
-                backgroundColor: Colors.red,
-                foregroundColor: Colors.white,
-                padding: EdgeInsets.zero,
-                shape: const CircleBorder(),
-              ),
-              child: const Icon(Icons.logout),
             ),
           ),
           const SizedBox(width: 10),

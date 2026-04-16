@@ -13,7 +13,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  final nameController = TextEditingController();
+  final firstNameController = TextEditingController();
+  final lastNameController = TextEditingController();
   final heightController = TextEditingController();
   final weightController = TextEditingController();
   final ageController = TextEditingController();
@@ -24,26 +25,28 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> register() async {
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
-    final name = nameController.text.trim();
+    final imie = firstNameController.text.trim();
+    final nazwisko = lastNameController.text.trim();
     final height = heightController.text.trim();
     final weight = weightController.text.trim();
     final age = ageController.text.trim();
 
-    if (name.isEmpty ||
+    if (imie.isEmpty ||
+        nazwisko.isEmpty ||
         height.isEmpty ||
         weight.isEmpty ||
         age.isEmpty ||
         email.isEmpty ||
         password.isEmpty) {
       setState(() {
-        error = 'uzupelnij wszystkie pola';
+        error = 'Uzupełnij wszystkie pola';
       });
       return;
     }
 
     if (password.length < 6) {
       setState(() {
-        error = 'haslo musi miec minimum 6 znakow';
+        error = 'Hasło musi mieć minimum 6 znaków';
       });
       return;
     }
@@ -58,7 +61,9 @@ class _LoginPageState extends State<LoginPage> {
         await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
           'uid': user.uid,
           'email': email,
-          'imieNazwisko': name,
+          'imie': imie,
+          'nazwisko': nazwisko,
+          'imieNazwisko': '$imie $nazwisko'.trim(),
           'wzrost': height,
           'waga': weight,
           'wiek': age,
@@ -77,7 +82,8 @@ class _LoginPageState extends State<LoginPage> {
           error = '';
           emailController.clear();
           passwordController.clear();
-          nameController.clear();
+          firstNameController.clear();
+          lastNameController.clear();
           heightController.clear();
           weightController.clear();
           ageController.clear();
@@ -85,7 +91,7 @@ class _LoginPageState extends State<LoginPage> {
       }
     } on FirebaseAuthException catch (e) {
       setState(() {
-        error = e.message ?? 'blad rejestracji';
+        error = e.message ?? 'Błąd rejestracji';
       });
     }
   }
@@ -96,14 +102,14 @@ class _LoginPageState extends State<LoginPage> {
 
     if (email.isEmpty || password.isEmpty) {
       setState(() {
-        error = 'uzupelnij email i haslo';
+        error = 'Uzupełnij e-mail i hasło';
       });
       return;
     }
 
     if (password.length < 6) {
       setState(() {
-        error = 'haslo musi miec minimum 6 znakow';
+        error = 'Hasło musi mieć minimum 6 znaków';
       });
       return;
     }
@@ -122,7 +128,7 @@ class _LoginPageState extends State<LoginPage> {
       );
     } on FirebaseAuthException catch (e) {
       setState(() {
-        error = e.message ?? 'blad logowania';
+        error = e.message ?? 'Błąd logowania';
       });
     }
   }
@@ -139,45 +145,54 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 if (isRegister) ...[
                   TextField(
-                    controller: nameController,
+                    controller: firstNameController,
+                    textCapitalization: TextCapitalization.words,
                     decoration: const InputDecoration(
-                      labelText: 'imie i nazwisko',
+                      labelText: 'Imię',
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  TextField(
+                    controller: lastNameController,
+                    textCapitalization: TextCapitalization.words,
+                    decoration: const InputDecoration(
+                      labelText: 'Nazwisko',
                     ),
                   ),
                   const SizedBox(height: 12),
                   TextField(
                     controller: heightController,
                     keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(labelText: 'wzrost'),
+                    decoration: const InputDecoration(labelText: 'Wzrost (cm)'),
                   ),
                   const SizedBox(height: 12),
                   TextField(
                     controller: weightController,
                     keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(labelText: 'waga'),
+                    decoration: const InputDecoration(labelText: 'Waga (kg)'),
                   ),
                   const SizedBox(height: 12),
                   TextField(
                     controller: ageController,
                     keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(labelText: 'wiek'),
+                    decoration: const InputDecoration(labelText: 'Wiek'),
                   ),
                   const SizedBox(height: 12),
                 ],
                 TextField(
                   controller: emailController,
-                  decoration: const InputDecoration(labelText: 'email'),
+                  decoration: const InputDecoration(labelText: 'E-mail'),
                 ),
                 const SizedBox(height: 12),
                 TextField(
                   controller: passwordController,
                   obscureText: true,
-                  decoration: const InputDecoration(labelText: 'haslo'),
+                  decoration: const InputDecoration(labelText: 'Hasło'),
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: isRegister ? register : login,
-                  child: Text(isRegister ? 'zarejestruj' : 'zaloguj'),
+                  child: Text(isRegister ? 'Zarejestruj się' : 'Zaloguj się'),
                 ),
                 const SizedBox(height: 12),
                 Text(error, style: const TextStyle(color: Colors.red)),

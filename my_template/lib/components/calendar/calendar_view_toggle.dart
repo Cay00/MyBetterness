@@ -24,7 +24,7 @@ class CalendarViewToggle extends StatelessWidget {
         children: [
           Expanded(
             child: _ToggleButton(
-              label: 'Daily',
+              label: 'Dziennie',
               isSelected: selectedMode == CalendarViewMode.daily,
               onTap: () => onModeChanged(CalendarViewMode.daily),
             ),
@@ -32,7 +32,7 @@ class CalendarViewToggle extends StatelessWidget {
           const SizedBox(width: 0),
           Expanded(
             child: _ToggleButton(
-              label: 'Monthly',
+              label: 'Miesięcznie',
               isSelected: selectedMode == CalendarViewMode.monthly,
               onTap: () => onModeChanged(CalendarViewMode.monthly),
             ),

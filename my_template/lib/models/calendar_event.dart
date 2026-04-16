@@ -34,7 +34,7 @@ class CalendarEvent {
       description: map['description'] ?? '',
       startTime: (map['startTime'] as Timestamp).toDate(),
       endTime: (map['endTime'] as Timestamp).toDate(),
-      category: map['category'] ?? 'Doctor',
+      category: map['category'] ?? 'Lekarz',
     );
   }
 }
