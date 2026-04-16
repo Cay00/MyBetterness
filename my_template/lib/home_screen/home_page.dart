@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
+import '../mapa_screen.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: SafeArea(
-        child: HomePageContent(),
-      ),
-    );
+    return const Scaffold(body: SafeArea(child: HomePageContent()));
   }
 }
 
@@ -83,22 +80,52 @@ class HomePageContent extends StatelessWidget {
                   style: TextStyle(color: Colors.white70, fontSize: 16),
                 ),
                 const SizedBox(height: 18),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 22,
-                    vertical: 12,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: const Text(
-                    'Znajdź pomoc',
-                    style: TextStyle(
-                      color: Color(0xff2f6df6),
-                      fontWeight: FontWeight.w800,
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 22,
+                        vertical: 12,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: const Text(
+                        'Znajdź pomoc',
+                        style: TextStyle(
+                          color: Color(0xff2f6df6),
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
                     ),
-                  ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => const MapScreen(),
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color.fromARGB(
+                            218,
+                            253,
+                            253,
+                            253,
+                          ),
+                          foregroundColor: const Color(0xff2f6df6),
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        child: const Text('Otwórz Mapę'),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -153,10 +180,7 @@ class HomePageContent extends StatelessWidget {
               ),
               const SizedBox(width: 12),
               Expanded(
-                child: _HydrationCard(
-                  currentLiters: 1.6,
-                  goalLiters: 2.0,
-                ),
+                child: _HydrationCard(currentLiters: 1.6, goalLiters: 2.0),
               ),
             ],
           ),
@@ -336,10 +360,7 @@ class _HealthMetricCard extends StatelessWidget {
 }
 
 class _HydrationCard extends StatelessWidget {
-  const _HydrationCard({
-    required this.currentLiters,
-    required this.goalLiters,
-  });
+  const _HydrationCard({required this.currentLiters, required this.goalLiters});
 
   final double currentLiters;
   final double goalLiters;

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../default_screen.dart';
 
 class LoginPage extends StatefulWidget {
@@ -21,6 +22,20 @@ class _LoginPageState extends State<LoginPage> {
 
   bool isRegister = false;
   String error = '';
+
+  Future<void> _saveSession(String userId, String email) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isLoggedIn', true);
+    await prefs.setString('userId', userId);
+    await prefs.setString('userEmail', email);
+  }
+
+  Future<void> _clearSession() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('isLoggedIn');
+    await prefs.remove('userId');
+    await prefs.remove('userEmail');
+  }
 
   Future<void> register() async {
     final email = emailController.text.trim();
@@ -70,6 +85,8 @@ class _LoginPageState extends State<LoginPage> {
           'createdAt': FieldValue.serverTimestamp(),
         });
 
+        await _saveSession(user.uid, email);
+
         if (!mounted) return;
 
         Navigator.pushReplacement(
@@ -90,6 +107,7 @@ class _LoginPageState extends State<LoginPage> {
         });
       }
     } on FirebaseAuthException catch (e) {
+      if (!mounted) return;
       setState(() {
         error = e.message ?? 'Błąd rejestracji';
       });
@@ -122,11 +140,16 @@ class _LoginPageState extends State<LoginPage> {
 
       if (!mounted) return;
 
+      await _saveSession(FirebaseAuth.instance.currentUser!.uid, email);
+
+      if (!mounted) return;
+
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const DefaultScreen()),
       );
     } on FirebaseAuthException catch (e) {
+      if (!mounted) return;
       setState(() {
         error = e.message ?? 'Błąd logowania';
       });
@@ -147,17 +170,13 @@ class _LoginPageState extends State<LoginPage> {
                   TextField(
                     controller: firstNameController,
                     textCapitalization: TextCapitalization.words,
-                    decoration: const InputDecoration(
-                      labelText: 'Imię',
-                    ),
+                    decoration: const InputDecoration(labelText: 'Imię'),
                   ),
                   const SizedBox(height: 12),
                   TextField(
                     controller: lastNameController,
                     textCapitalization: TextCapitalization.words,
-                    decoration: const InputDecoration(
-                      labelText: 'Nazwisko',
-                    ),
+                    decoration: const InputDecoration(labelText: 'Nazwisko'),
                   ),
                   const SizedBox(height: 12),
                   TextField(

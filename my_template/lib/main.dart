@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'services/firebase/firebase_options.dart';
-import 'login_page/login_page.dart';
+import 'auth_check.dart';
 import 'theme/app_theme.dart';
 
 Future<void> main() async {
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
-      home: const LoginPage(),
+      home: const AuthCheck(),
     );
   }
 }
