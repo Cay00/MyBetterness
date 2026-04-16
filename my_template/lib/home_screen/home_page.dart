@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../map_screen.dart';
+import '../mapa_screen.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -105,7 +105,6 @@ class HomePageContent extends StatelessWidget {
                         onPressed: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              // MAPA TUTAJ
                               builder: (_) => const MapScreen(),
                             ),
                           );
