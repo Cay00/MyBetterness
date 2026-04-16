@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -143,46 +144,61 @@ class _MapScreenState extends State<MapScreen> {
 
   Future<List<Marker>> _fetchPharmacies(LatLng center) async {
     final query =
-        '[out:json][timeout:25];(node["amenity"="pharmacy"](around:3000,${center.latitude},${center.longitude});way["amenity"="pharmacy"](around:3000,${center.latitude},${center.longitude});relation["amenity"="pharmacy"](around:3000,${center.latitude},${center.longitude}););out center;';
+        '[out:json][timeout:30];(node["amenity"="pharmacy"](around:3000,${center.latitude},${center.longitude});way["amenity"="pharmacy"](around:3000,${center.latitude},${center.longitude});relation["amenity"="pharmacy"](around:3000,${center.latitude},${center.longitude}););out center;';
 
-    final response = await http
-        .post(
-          Uri.parse('https://overpass-api.de/api/interpreter'),
-          body: {'data': query},
-        )
-        .timeout(const Duration(seconds: 20));
+    try {
+      final response = await http
+          .post(
+            Uri.parse('https://overpass-api.de/api/interpreter'),
+            body: {'data': query},
+            headers: const {'User-Agent': 'MyBetternessApp/1.0'},
+          )
+          .timeout(const Duration(seconds: 25));
 
-    if (response.statusCode != 200) {
-      throw Exception('Overpass error ${response.statusCode}');
-    }
-
-    final data = jsonDecode(response.body) as Map<String, dynamic>;
-    final elements = (data['elements'] as List<dynamic>? ?? [])
-        .whereType<Map<String, dynamic>>();
-
-    final markers = <Marker>[];
-    for (final item in elements) {
-      final lat = _readLat(item);
-      final lon = _readLon(item);
-      if (lat == null || lon == null) {
-        continue;
+      if (response.statusCode != 200) {
+        throw Exception('Overpass API error: ${response.statusCode}');
       }
 
-      markers.add(
-        Marker(
-          point: LatLng(lat, lon),
-          width: 30,
-          height: 30,
-          child: const Icon(
-            Icons.local_pharmacy,
-            color: Colors.green,
-            size: 30,
-          ),
-        ),
-      );
-    }
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      final elements = (data['elements'] as List<dynamic>? ?? [])
+          .whereType<Map<String, dynamic>>();
 
-    return markers;
+      if (elements.isEmpty) {
+        throw Exception('no_pharmacies');
+      }
+
+      final markers = <Marker>[];
+      for (final item in elements) {
+        final lat = _readLat(item);
+        final lon = _readLon(item);
+        if (lat == null || lon == null) {
+          continue;
+        }
+
+        markers.add(
+          Marker(
+            point: LatLng(lat, lon),
+            width: 30,
+            height: 30,
+            child: const Icon(
+              Icons.local_pharmacy,
+              color: Colors.green,
+              size: 30,
+            ),
+          ),
+        );
+      }
+
+      if (markers.isEmpty) {
+        throw Exception('no_pharmacies');
+      }
+
+      return markers;
+    } on SocketException {
+      throw Exception('network_error');
+    } catch (e) {
+      rethrow;
+    }
   }
 
   double? _readLat(Map<String, dynamic> item) {
