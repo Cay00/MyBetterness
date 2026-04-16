@@ -105,6 +105,7 @@ class HomePageContent extends StatelessWidget {
                         onPressed: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
+                              // MAPA TUTAJ
                               builder: (_) => const MapScreen(),
                             ),
                           );
