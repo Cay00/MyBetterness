@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../mapa_screen.dart';
+import 'health_detail/health_detail_pages.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -10,12 +11,14 @@ class HomePage extends StatelessWidget {
 }
 
 class HomePageContent extends StatelessWidget {
-  const HomePageContent({super.key});
+  const HomePageContent({super.key, this.onOpenFindHelp});
+
+  final VoidCallback? onOpenFindHelp;
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(16, 0, 16, 110),
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -37,25 +40,6 @@ class HomePageContent extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(vertical: 18),
-            decoration: BoxDecoration(
-              color: const Color(0xffef3d3d),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: const Center(
-              child: Text(
-                '✱ SOS — POGOTOWIE',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 16),
           Container(
             width: double.infinity,
             padding: const EdgeInsets.all(22),
@@ -82,47 +66,23 @@ class HomePageContent extends StatelessWidget {
                 const SizedBox(height: 18),
                 Row(
                   children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 22,
-                        vertical: 12,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: const Text(
-                        'Znajdź pomoc',
-                        style: TextStyle(
-                          color: Color(0xff2f6df6),
-                          fontWeight: FontWeight.w800,
-                        ),
+                    Expanded(
+                      child: _HelpBlueTileButton(
+                        label: 'Znajdź pomoc',
+                        onTap: onOpenFindHelp,
                       ),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {
+                      child: _HelpBlueTileButton(
+                        label: 'Mapa',
+                        onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (_) => const MapScreen(),
                             ),
                           );
                         },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color.fromARGB(
-                            218,
-                            253,
-                            253,
-                            253,
-                          ),
-                          foregroundColor: const Color(0xff2f6df6),
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
-                        child: const Text('Otwórz Mapę'),
                       ),
                     ),
                   ],
@@ -150,6 +110,7 @@ class HomePageContent extends StatelessWidget {
                   value: '72.4',
                   unit: 'kg',
                   hint: 'Stabilnie vs ub. tydzień',
+                  onOpenDetail: () => openWeightDetail(context),
                 ),
               ),
               const SizedBox(width: 12),
@@ -161,6 +122,7 @@ class HomePageContent extends StatelessWidget {
                   value: '98',
                   unit: 'mg/dL',
                   hint: 'Na czczo · rano',
+                  onOpenDetail: () => openGlucoseDetail(context),
                 ),
               ),
             ],
@@ -176,11 +138,16 @@ class HomePageContent extends StatelessWidget {
                   value: '120/78',
                   unit: 'mmHg',
                   hint: 'W spoczynku',
+                  onOpenDetail: () => openBloodPressureDetail(context),
                 ),
               ),
               const SizedBox(width: 12),
               Expanded(
-                child: _HydrationCard(currentLiters: 1.6, goalLiters: 2.0),
+                child: _HydrationCard(
+                  currentLiters: 1.6,
+                  goalLiters: 2.0,
+                  onOpenDetail: () => openHydrationDetail(context),
+                ),
               ),
             ],
           ),
@@ -202,68 +169,76 @@ class HomePageContent extends StatelessWidget {
               borderRadius: BorderRadius.circular(24),
             ),
             child: Column(
-              children: const [
+              children: [
                 _InfoRow(
                   icon: Icons.air_outlined,
-                  iconColor: Color(0xff4caf50),
+                  iconColor: const Color(0xff4caf50),
                   label: 'SpO₂',
                   value: '98%',
+                  onOpenDetail: () => openSpo2Detail(context),
                 ),
-                Divider(height: 22),
+                const Divider(height: 22),
                 _InfoRow(
                   icon: Icons.favorite_border,
-                  iconColor: Color(0xffff9800),
+                  iconColor: const Color(0xffff9800),
                   label: 'Tętno',
                   value: '72 bpm',
+                  onOpenDetail: () => openHeartRateDetail(context),
                 ),
-                Divider(height: 22),
+                const Divider(height: 22),
                 _InfoRow(
                   icon: Icons.bedtime_outlined,
-                  iconColor: Color(0xff9c27b0),
-                  label: 'Sleep',
+                  iconColor: const Color(0xff9c27b0),
+                  label: 'Sen',
                   value: '7 h 20 m',
+                  onOpenDetail: () => openSleepDetail(context),
                 ),
-                Divider(height: 22),
+                const Divider(height: 22),
                 _InfoRow(
                   icon: Icons.medication_outlined,
-                  iconColor: Color(0xff2f6df6),
+                  iconColor: const Color(0xff2f6df6),
                   label: 'Leki dziś',
                   value: '3 / 3 przyjęte',
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 16),
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: const Color(0xffeff4ff),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Row(
-              children: [
-                const Icon(
-                  Icons.info_outline,
-                  color: Color(0xff2f6df6),
-                  size: 22,
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    'Podane wartości są przykładowe. Podłącz urządzenie lub uzupełnij wpisy, aby spersonalizować ten ekran.',
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                      color: const Color(0xff222222).withValues(alpha: 0.85),
-                      height: 1.35,
-                    ),
-                  ),
+                  onOpenDetail: () => openMedicationsDetail(context),
                 ),
               ],
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _HelpBlueTileButton extends StatelessWidget {
+  const _HelpBlueTileButton({required this.label, required this.onTap});
+
+  final String label;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(20),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+          child: Center(
+            child: Text(
+              label,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                color: Color(0xff2f6df6),
+                fontWeight: FontWeight.w800,
+                fontSize: 15,
+                height: 1.2,
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -277,6 +252,7 @@ class _HealthMetricCard extends StatelessWidget {
     required this.value,
     required this.unit,
     required this.hint,
+    required this.onOpenDetail,
   });
 
   final IconData icon;
@@ -285,144 +261,209 @@ class _HealthMetricCard extends StatelessWidget {
   final String value;
   final String unit;
   final String hint;
+  final VoidCallback onOpenDetail;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(24),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: accent.withValues(alpha: 0.14),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Icon(icon, size: 22, color: accent),
+    final radius = BorderRadius.circular(24);
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: radius,
+        onTap: onOpenDetail,
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: radius,
               ),
-              const Spacer(),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Text(
-            label,
-            style: const TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w700,
-              color: Color(0xff222222),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: accent.withValues(alpha: 0.14),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Icon(icon, size: 22, color: accent),
+                      ),
+                      const Spacer(),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    label,
+                    style: const TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xff222222),
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.baseline,
+                    textBaseline: TextBaseline.alphabetic,
+                    children: [
+                      Text(
+                        value,
+                        style: const TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w800,
+                          color: Color(0xff222222),
+                        ),
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        unit,
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w700,
+                          color: const Color(
+                            0xff222222,
+                          ).withValues(alpha: 0.55),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    hint,
+                    style: TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                      color: const Color(0xff222222).withValues(alpha: 0.5),
+                      height: 1.2,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: 4),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.baseline,
-            textBaseline: TextBaseline.alphabetic,
-            children: [
-              Text(
-                value,
-                style: const TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.w800,
-                  color: Color(0xff222222),
-                ),
-              ),
-              const SizedBox(width: 4),
-              Text(
-                unit,
-                style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w700,
-                  color: const Color(0xff222222).withValues(alpha: 0.55),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Text(
-            hint,
-            style: TextStyle(
-              fontSize: 11,
-              fontWeight: FontWeight.w600,
-              color: const Color(0xff222222).withValues(alpha: 0.5),
-              height: 1.2,
+            Positioned(
+              top: 8,
+              right: 8,
+              child: _MetricCornerPlusBadge(accent: accent),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 }
 
 class _HydrationCard extends StatelessWidget {
-  const _HydrationCard({required this.currentLiters, required this.goalLiters});
+  const _HydrationCard({
+    required this.currentLiters,
+    required this.goalLiters,
+    required this.onOpenDetail,
+  });
 
   final double currentLiters;
   final double goalLiters;
+  final VoidCallback onOpenDetail;
 
   @override
   Widget build(BuildContext context) {
     final progress = (currentLiters / goalLiters).clamp(0.0, 1.0);
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(24),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: const Color(0xff4caf50).withValues(alpha: 0.14),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: const Icon(
-                  Icons.water_drop_outlined,
-                  size: 22,
-                  color: Color(0xff4caf50),
-                ),
+    const accent = Color(0xff4caf50);
+    final radius = BorderRadius.circular(24);
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: radius,
+        onTap: onOpenDetail,
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: radius,
               ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          const Text(
-            'Nawodnienie',
-            style: TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w700,
-              color: Color(0xff222222),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: accent.withValues(alpha: 0.14),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: const Icon(
+                          Icons.water_drop_outlined,
+                          size: 22,
+                          color: accent,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  const Text(
+                    'Nawodnienie',
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xff222222),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    '${currentLiters.toStringAsFixed(1)} / ${goalLiters.toStringAsFixed(1)} L',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w800,
+                      color: Color(0xff222222),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(999),
+                    child: LinearProgressIndicator(
+                      value: progress,
+                      minHeight: 8,
+                      backgroundColor: const Color(0xffe8eef5),
+                      color: accent,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            '${currentLiters.toStringAsFixed(1)} / ${goalLiters.toStringAsFixed(1)} L',
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w800,
-              color: Color(0xff222222),
+            Positioned(
+              top: 8,
+              right: 8,
+              child: _MetricCornerPlusBadge(accent: accent),
             ),
-          ),
-          const SizedBox(height: 10),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(999),
-            child: LinearProgressIndicator(
-              value: progress,
-              minHeight: 8,
-              backgroundColor: const Color(0xffe8eef5),
-              color: const Color(0xff4caf50),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
+    );
+  }
+}
+
+class _MetricCornerPlusBadge extends StatelessWidget {
+  const _MetricCornerPlusBadge({required this.accent});
+
+  final Color accent;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 30,
+      height: 30,
+      decoration: BoxDecoration(
+        color: accent.withValues(alpha: 0.18),
+        shape: BoxShape.circle,
+      ),
+      alignment: Alignment.center,
+      child: const Icon(Icons.add_rounded, size: 20, color: Color(0xff222222)),
     );
   }
 }
@@ -433,45 +474,76 @@ class _InfoRow extends StatelessWidget {
     required this.iconColor,
     required this.label,
     required this.value,
+    required this.onOpenDetail,
   });
 
   final IconData icon;
   final Color iconColor;
   final String label;
   final String value;
+  final VoidCallback onOpenDetail;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: iconColor.withValues(alpha: 0.12),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Icon(icon, size: 20, color: iconColor),
-        ),
-        const SizedBox(width: 14),
-        Expanded(
-          child: Text(
-            label,
-            style: const TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w700,
-              color: Color(0xff222222),
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(14),
+        onTap: onOpenDetail,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 2),
+          child: SizedBox(
+            width: double.infinity,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: iconColor.withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Icon(icon, size: 20, color: iconColor),
+                ),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Text(
+                    label,
+                    style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xff222222),
+                    ),
+                  ),
+                ),
+                Text(
+                  value,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w800,
+                    color: Color(0xff222222),
+                  ),
+                ),
+                const SizedBox(width: 4),
+                Container(
+                  width: 30,
+                  height: 30,
+                  decoration: BoxDecoration(
+                    color: iconColor.withValues(alpha: 0.14),
+                    shape: BoxShape.circle,
+                  ),
+                  alignment: Alignment.center,
+                  child: const Icon(
+                    Icons.add_rounded,
+                    size: 20,
+                    color: Color(0xff222222),
+                  ),
+                ),
+              ],
             ),
           ),
         ),
-        Text(
-          value,
-          style: const TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w800,
-            color: Color(0xff222222),
-          ),
-        ),
-      ],
+      ),
     );
   }
 }

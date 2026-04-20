@@ -223,7 +223,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget _sectionTitle(String title) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 10, top: 8),
+      padding: const EdgeInsets.only(bottom: 14, top: 8),
       child: Text(
         title,
         style: const TextStyle(
@@ -273,7 +273,7 @@ class _ProfilePageState extends State<ProfilePage> {
     }
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(16, 0, 16, 110),
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -330,7 +330,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     color: _ink,
                   ),
                 ),
-                const SizedBox(height: 14),
+                const SizedBox(height: 22),
                 TextField(
                   controller: _heightCtrl,
                   onChanged: (_) => setState(() {}),
@@ -343,7 +343,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     color: _ink,
                   ),
                 ),
-                const SizedBox(height: 14),
+                const SizedBox(height: 22),
                 TextField(
                   controller: _weightCtrl,
                   onChanged: (_) => setState(() {}),
@@ -354,7 +354,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     color: _ink,
                   ),
                 ),
-                const SizedBox(height: 14),
+                const SizedBox(height: 22),
                 TextField(
                   controller: _ageCtrl,
                   onChanged: (_) => setState(() {}),
@@ -365,7 +365,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     color: _ink,
                   ),
                 ),
-                const SizedBox(height: 14),
+                const SizedBox(height: 22),
                 InputDecorator(
                   decoration: _decoration('E-mail (do logowania)'),
                   child: Text(
@@ -581,7 +581,6 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
           ),
-          const SizedBox(height: 12),
         ],
       ),
     );

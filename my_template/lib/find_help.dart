@@ -122,7 +122,7 @@ class _FindHelpPageState extends State<FindHelpPage> {
         const SizedBox(height: 16),
         Expanded(
           child: ListView.separated(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 110),
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
             itemCount: 10,
             separatorBuilder: (_, __) => const SizedBox(height: 16),
             itemBuilder: (context, index) {

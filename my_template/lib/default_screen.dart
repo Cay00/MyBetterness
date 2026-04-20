@@ -25,16 +25,20 @@ class _DefaultScreenState extends State<DefaultScreen> {
     'Profil',
   ];
 
-  final List<Widget> tabs = const [
-    HomePageContent(),
-    CalendarPage(),
-    FindHelpPage(),
-    Screen3Page(),
-    ProfilePage(),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final tabs = <Widget>[
+      HomePageContent(
+        onOpenFindHelp: () {
+          setState(() => currentIndex = 2);
+        },
+      ),
+      const CalendarPage(),
+      const FindHelpPage(),
+      const Screen3Page(),
+      const ProfilePage(),
+    ];
+
     return PopScope(
       canPop: currentIndex == 0,
       onPopInvokedWithResult: (didPop, result) {
