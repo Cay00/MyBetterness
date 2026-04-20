@@ -1,4 +1,8 @@
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
 import '../mapa_screen.dart';
 
 class HomePage extends StatelessWidget {
@@ -11,6 +15,77 @@ class HomePage extends StatelessWidget {
 
 class HomePageContent extends StatelessWidget {
   const HomePageContent({super.key});
+
+  Future<void> _generatePdf(BuildContext context) async {
+    final pdf = pw.Document();
+    
+    // Pobieramy czcionkę obsługującą polskie znaki
+    final font = await PdfGoogleFonts.robotoRegular();
+    final fontBold = await PdfGoogleFonts.robotoBold();
+
+    pdf.addPage(
+      pw.Page(
+        pageFormat: PdfPageFormat.a4,
+        theme: pw.ThemeData.withFont(
+          base: font,
+          bold: fontBold,
+        ),
+        build: (pw.Context context) {
+          return pw.Column(
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            children: [
+              pw.Header(
+                level: 0,
+                child: pw.Text(
+                  'Raport Zdrowia - MyBetterness',
+                  style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold),
+                ),
+              ),
+              pw.SizedBox(height: 20),
+              pw.Text('Podsumowanie parametrów życiowych:', style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
+              pw.SizedBox(height: 10),
+              _pdfRow('Waga', '72.4 kg'),
+              _pdfRow('Glukoza', '98 mg/dL'),
+              _pdfRow('Ciśnienie', '120/78 mmHg'),
+              _pdfRow('Nawodnienie', '1.6 / 2.0 L'),
+              pw.SizedBox(height: 20),
+              pw.Text('Dodatkowe sygnały:', style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
+              pw.SizedBox(height: 10),
+              _pdfRow('SpO2', '98%'),
+              _pdfRow('Tętno', '72 bpm'),
+              _pdfRow('Sen', '7 h 20 m'),
+              _pdfRow('Leki dzisiaj', '3 / 3 przyjęte'),
+              pw.Padding(
+                padding: const pw.EdgeInsets.only(top: 40),
+                child: pw.Text(
+                  'Wygenerowano: ${DateTime.now().toString().split('.')[0]}',
+                  style: const pw.TextStyle(fontSize: 10, color: PdfColors.grey),
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+
+    await Printing.layoutPdf(
+      onLayout: (PdfPageFormat format) async => pdf.save(),
+      name: 'Raport_Zdrowia_MyBetterness.pdf',
+    );
+  }
+
+  pw.Widget _pdfRow(String label, String value) {
+    return pw.Padding(
+      padding: const pw.EdgeInsets.symmetric(vertical: 4),
+      child: pw.Row(
+        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+        children: [
+          pw.Text(label),
+          pw.Text(value, style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -131,13 +206,23 @@ class HomePageContent extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 24),
-          const Text(
-            'Parametry i samopoczucie',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w700,
-              color: Color(0xff222222),
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Parametry i samopoczucie',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xff222222),
+                ),
+              ),
+              IconButton(
+                onPressed: () => _generatePdf(context),
+                icon: const Icon(Icons.picture_as_pdf, color: Color(0xff2f6df6)),
+                tooltip: 'Pobierz raport PDF',
+              ),
+            ],
           ),
           const SizedBox(height: 12),
           Row(
