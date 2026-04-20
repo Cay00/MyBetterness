@@ -1,4 +1,10 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
+import 'package:health/health.dart';
+import 'package:usage_stats/usage_stats.dart';
 import '../mapa_screen.dart';
 
 class HomePage extends StatelessWidget {
@@ -11,6 +17,107 @@ class HomePage extends StatelessWidget {
 
 class HomePageContent extends StatelessWidget {
   const HomePageContent({super.key});
+
+  Future<void> _generatePdf(BuildContext context) async {
+    final pdf = pw.Document();
+    final font = await PdfGoogleFonts.robotoRegular();
+    final fontBold = await PdfGoogleFonts.robotoBold();
+
+    int steps = 0;
+    double calories = 0;
+    Duration screenTime = Duration.zero;
+
+    try {
+      Health health = Health();
+      DateTime now = DateTime.now();
+      DateTime midnight = DateTime(now.year, now.month, now.day);
+      
+      final types = [HealthDataType.STEPS, HealthDataType.ACTIVE_ENERGY_BURNED];
+      
+      // requestAuthorization - pozycyjne
+      bool hasHealthAccess = await health.requestAuthorization(types);
+      if (hasHealthAccess) {
+        // getTotalStepsInInterval - pozycyjne
+        steps = await health.getTotalStepsInInterval(midnight, now) ?? 0;
+        
+        // getHealthDataFromTypes - nazwane (zgodnie z podpowiedzią Twojego IDE)
+        List<HealthDataPoint> data = await health.getHealthDataFromTypes(
+          types: [HealthDataType.ACTIVE_ENERGY_BURNED],
+          startTime: midnight,
+          endTime: now,
+        );
+        for (var p in data) {
+          final val = p.value;
+          if (val is NumericHealthValue) calories += val.numericValue.toDouble();
+        }
+      }
+
+      if (Platform.isAndroid) {
+        List<UsageInfo> usageStats = await UsageStats.queryUsageStats(midnight, now);
+        int totalTimeMs = 0;
+        for (var info in usageStats) {
+          totalTimeMs += int.tryParse(info.totalTimeInForeground ?? '0') ?? 0;
+        }
+        screenTime = Duration(milliseconds: totalTimeMs);
+      }
+    } catch (e) {
+      debugPrint("Błąd przy przygotowaniu PDF: $e");
+    }
+
+    pdf.addPage(
+      pw.Page(
+        pageFormat: PdfPageFormat.a4,
+        theme: pw.ThemeData.withFont(base: font, bold: fontBold),
+        build: (pw.Context context) {
+          return pw.Column(
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            children: [
+              pw.Header(
+                level: 0,
+                child: pw.Text('Raport Zdrowia i Aktywności - MyBetterness', style: pw.TextStyle(fontSize: 22, fontWeight: pw.FontWeight.bold)),
+              ),
+              pw.SizedBox(height: 20),
+              
+              pw.Text('Parametry życiowe:', style: pw.TextStyle(fontSize: 16, fontWeight: pw.FontWeight.bold)),
+              pw.Divider(),
+              _pdfRow('Waga', '72.4 kg'),
+              _pdfRow('Glukoza', '98 mg/dL'),
+              _pdfRow('Ciśnienie', '120/78 mmHg'),
+              
+              pw.SizedBox(height: 20),
+              pw.Text('Aktywność (dzisiaj):', style: pw.TextStyle(fontSize: 16, fontWeight: pw.FontWeight.bold)),
+              pw.Divider(),
+              _pdfRow('Liczba kroków', '$steps'),
+              _pdfRow('Spalone kalorie', '${calories.toStringAsFixed(0)} kcal'),
+              
+              pw.SizedBox(height: 20),
+              pw.Text('Higiena cyfrowa:', style: pw.TextStyle(fontSize: 16, fontWeight: pw.FontWeight.bold)),
+              pw.Divider(),
+              _pdfRow('Czas przed ekranem', '${screenTime.inHours}h ${screenTime.inMinutes.remainder(60)}m'),
+              
+              pw.Spacer(),
+              pw.Text('Wygenerowano: ${DateTime.now().toString().split('.')[0]}', style: const pw.TextStyle(fontSize: 10, color: PdfColors.grey)),
+            ],
+          );
+        },
+      ),
+    );
+
+    await Printing.layoutPdf(
+      onLayout: (PdfPageFormat format) async => pdf.save(),
+      name: 'Pelny_Raport_Zdrowia.pdf',
+    );
+  }
+
+  pw.Widget _pdfRow(String label, String value) {
+    return pw.Padding(
+      padding: const pw.EdgeInsets.symmetric(vertical: 4),
+      child: pw.Row(
+        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+        children: [pw.Text(label), pw.Text(value, style: pw.TextStyle(fontWeight: pw.FontWeight.bold))],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +140,7 @@ class HomePageContent extends StatelessWidget {
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w600,
-              color: const Color(0xff222222).withValues(alpha: 0.65),
+              color: const Color(0xff222222).withOpacity(0.65),
             ),
           ),
           const SizedBox(height: 20),
@@ -131,13 +238,23 @@ class HomePageContent extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 24),
-          const Text(
-            'Parametry i samopoczucie',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w700,
-              color: Color(0xff222222),
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Parametry i samopoczucie',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xff222222),
+                ),
+              ),
+              IconButton(
+                onPressed: () => _generatePdf(context),
+                icon: const Icon(Icons.picture_as_pdf, color: Color(0xff2f6df6)),
+                tooltip: 'Pobierz pełny raport PDF',
+              ),
+            ],
           ),
           const SizedBox(height: 12),
           Row(
@@ -255,7 +372,7 @@ class HomePageContent extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
-                      color: const Color(0xff222222).withValues(alpha: 0.85),
+                      color: const Color(0xff222222).withOpacity(0.85),
                       height: 1.35,
                     ),
                   ),
@@ -302,7 +419,7 @@ class _HealthMetricCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: accent.withValues(alpha: 0.14),
+                  color: accent.withOpacity(0.14),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(icon, size: 22, color: accent),
@@ -338,7 +455,7 @@ class _HealthMetricCard extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w700,
-                  color: const Color(0xff222222).withValues(alpha: 0.55),
+                  color: const Color(0xff222222).withOpacity(0.55),
                 ),
               ),
             ],
@@ -349,7 +466,7 @@ class _HealthMetricCard extends StatelessWidget {
             style: TextStyle(
               fontSize: 11,
               fontWeight: FontWeight.w600,
-              color: const Color(0xff222222).withValues(alpha: 0.5),
+              color: const Color(0xff222222).withOpacity(0.5),
               height: 1.2,
             ),
           ),
@@ -382,7 +499,7 @@ class _HydrationCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: const Color(0xff4caf50).withValues(alpha: 0.14),
+                  color: const Color(0xff4caf50).withOpacity(0.14),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: const Icon(
@@ -447,7 +564,7 @@ class _InfoRow extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: iconColor.withValues(alpha: 0.12),
+            color: iconColor.withOpacity(0.12),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Icon(icon, size: 20, color: iconColor),
