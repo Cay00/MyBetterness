@@ -19,9 +19,9 @@ class _DefaultScreenState extends State<DefaultScreen> {
 
   final List<String> headerTitles = const [
     'MyBetterness',
+    'Przyjmowane leki',
     'Kalendarz opieki',
     'Znajdź pomoc',
-    'Informacje o zdrowiu',
     'Profil',
   ];
 
@@ -30,12 +30,12 @@ class _DefaultScreenState extends State<DefaultScreen> {
     final tabs = <Widget>[
       HomePageContent(
         onOpenFindHelp: () {
-          setState(() => currentIndex = 2);
+          setState(() => currentIndex = 3);
         },
       ),
+      const Screen3Page(),
       const CalendarPage(),
       const FindHelpPage(),
-      const Screen3Page(),
       const ProfilePage(),
     ];
 
@@ -53,7 +53,7 @@ class _DefaultScreenState extends State<DefaultScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (currentIndex != 2) ...[
+              if (currentIndex != 3) ...[
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: AppHeader(title: headerTitles[currentIndex]),

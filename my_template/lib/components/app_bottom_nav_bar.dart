@@ -38,14 +38,14 @@ class AppBottomNavBar extends StatelessWidget {
                 ),
                 _NavSlot(
                   selected: currentIndex == 1,
-                  icon: Icons.calendar_month_outlined,
-                  activeIcon: Icons.calendar_month,
+                  icon: Icons.medication_outlined,
+                  activeIcon: Icons.medication,
                   onTap: () => _handleTap(1),
                 ),
                 _NavSlot(
                   selected: currentIndex == 2,
-                  icon: Icons.volunteer_activism_outlined,
-                  activeIcon: Icons.volunteer_activism,
+                  icon: Icons.calendar_month_outlined,
+                  activeIcon: Icons.calendar_month,
                   onTap: () => _handleTap(2),
                 ),
                 _NavSlot(
