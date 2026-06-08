@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../caregiver/caregiver_screen.dart';
 import '../login_page/login_page.dart';
 import '../theme/app_theme.dart';
 import '../utils/profile_name_helper.dart';
@@ -535,6 +536,22 @@ class _ProfilePageState extends State<ProfilePage> {
                       const SnackBar(
                         content: Text('Tu pojawią się ustawienia prywatności.'),
                       ),
+                    );
+                  },
+                ),
+                const Divider(height: 20),
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: const Icon(Icons.supervisor_account_outlined, color: _ink),
+                  title: const Text(
+                    'Panel Opiekuna',
+                    style: TextStyle(fontWeight: FontWeight.w700, color: _ink),
+                  ),
+                  subtitle: const Text('Podgląd stanu zdrowia podopiecznego'),
+                  trailing: const Icon(Icons.chevron_right_rounded),
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => const CaregiverScreen()),
                     );
                   },
                 ),
