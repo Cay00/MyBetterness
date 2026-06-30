@@ -1,15 +1,5 @@
 ﻿# MyBetterness
 
-Dzień dobry.
-
- 
-
-Udało nam się już stworzyć makietę aplikacji. Czy mógłby Pan przesłać studentom informację o możliwości zaangażowania się w stworzenie prototypu aplikacji?
-
- 
-
-Chcielibyśmy, aby ona zawierała:
-
 – konto opiekuna,
 
 – przypomnienia o lekach (godziny, dawki, zmiany w terapii),
